@@ -74,6 +74,7 @@
     <Compile Include="Parsing\ClientBuildAttribute.cs" />
     <Compile Include="Parsing\Handlers\5.4.1 - 17538\AuthHandlers.cs" />
     <Compile Include="Parsing\Handlers\5.4.1 - 17538\MiscHandlers.cs" />
+    <Compile Include="Parsing\Handlers\5.4.1 - 17538\TutorialHandlers.cs" />
     <Compile Include="Parsing\Handlers\5.4.1 - 17538\UpdateHandlers.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Parsing\Handler.cs" />
