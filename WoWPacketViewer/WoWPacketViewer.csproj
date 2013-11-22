@@ -72,6 +72,7 @@
     <Compile Include="Misc\PacketDump.cs" />
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Utils.cs" />
+    <Compile Include="PacketReadItem.cs" />
     <Compile Include="Parsing\ClientBuildAttribute.cs" />
     <Compile Include="Parsing\Handlers\5.4.1 - 17538\AuthHandlers.cs" />
     <Compile Include="Parsing\Handlers\5.4.1 - 17538\CharacterHandlers.cs" />

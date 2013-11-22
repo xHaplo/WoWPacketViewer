@@ -23,25 +23,6 @@ namespace WoWPacketViewer
 
             _mainForm = mainForm;
             _baseTitle = Text;
-
-            // Enable double buffering on the data list to prevent flickering.
-            lvwPacketData.DoubleBuffer();
-
-            // Setup column headers for packet list.
-            var columnHeaders = new ColumnHeader[8];
-            for (var i = 0; i < columnHeaders.Length; i++)
-                columnHeaders[i] = new ColumnHeader();
-
-            columnHeaders[0].Text = "Bit offset";
-            columnHeaders[1].Text = "Byte offset";
-            columnHeaders[2].Text = "Name";
-            columnHeaders[3].Text = "Value";
-            columnHeaders[4].Text = "Type";
-            columnHeaders[5].Text = "Bit length";
-            columnHeaders[6].Text = "Byte length";
-            columnHeaders[7].Text = "Bits";
-
-            lvwPacketData.Columns.AddRange(columnHeaders);
         }
 
         public void LoadPacketData(Packet packet)
@@ -53,7 +34,7 @@ namespace WoWPacketViewer
             float bytePos = 0;
             foreach (var readInfo in packet.ReadList)
             {
-                var item = new ListViewItem();
+                var item = new PacketReadItem();
                 var bits = "";
                 
                 foreach (bool bit in readInfo.Bits)
@@ -61,32 +42,33 @@ namespace WoWPacketViewer
 
                 if (!readInfo.Ignored)
                 {
-                    item.Text = bitPos.ToString();
-                    item.SubItems.Add(bytePos.ToString());
+                    item.BitOffset = bitPos;
+                    item.ByteOffset = bytePos;
+
                     bitPos += readInfo.LengthBits;
                     bytePos += ((float)readInfo.LengthBits / 8);
                 }
                 else
                 {
-                    item.Text = "n/a";
-                    item.SubItems.Add("n/a");
+                    item.BitOffset = -1;
+                    item.ByteOffset = -1;
                 }
 
-                item.SubItems.Add(readInfo.Name);
-                item.SubItems.Add(readInfo.Data);
-                item.SubItems.Add(readInfo.Type.Name);
-                item.SubItems.Add(readInfo.LengthBits.ToString());
-                item.SubItems.Add(readInfo.Length.ToString());
-                item.SubItems.Add(bits);
+                item.Name = readInfo.Name;
+                item.Value = readInfo.Data;
+                item.Type = readInfo.Type;
+                item.BitLength = readInfo.LengthBits;
+                item.ByteLength = readInfo.Length;
+                item.Bits = bits;
 
-                lvwPacketData.Items.Add(item);
+                lvwPacketData.AddObject(item);
             }
         }
 
         public void ResetForm()
         {
             Text = _baseTitle;
-            lvwPacketData.Items.Clear();
+            lvwPacketData.ClearObjects();
         }
 
         private void frmInspectPacket_FormClosing(object sender, FormClosingEventArgs e)

@@ -28,18 +28,97 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lvwPacketData = new System.Windows.Forms.ListView();
+            this.lvwPacketData = new BrightIdeasSoftware.FastObjectListView();
+            this.olvColumnBitOffset = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnByteOffset = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnValue = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnBitLength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnByteLength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnBits = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            ((System.ComponentModel.ISupportInitialize)(this.lvwPacketData)).BeginInit();
             this.SuspendLayout();
             // 
             // lvwPacketData
             // 
+            this.lvwPacketData.AllColumns.Add(this.olvColumnBitOffset);
+            this.lvwPacketData.AllColumns.Add(this.olvColumnByteOffset);
+            this.lvwPacketData.AllColumns.Add(this.olvColumnName);
+            this.lvwPacketData.AllColumns.Add(this.olvColumnValue);
+            this.lvwPacketData.AllColumns.Add(this.olvColumnType);
+            this.lvwPacketData.AllColumns.Add(this.olvColumnBitLength);
+            this.lvwPacketData.AllColumns.Add(this.olvColumnByteLength);
+            this.lvwPacketData.AllColumns.Add(this.olvColumnBits);
+            this.lvwPacketData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumnBitOffset,
+            this.olvColumnByteOffset,
+            this.olvColumnName,
+            this.olvColumnValue,
+            this.olvColumnType,
+            this.olvColumnBitLength,
+            this.olvColumnByteLength,
+            this.olvColumnBits});
             this.lvwPacketData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvwPacketData.EmptyListMsg = "No reads.\n\nEither an acknowledgement/request packet, or the handler has yet to be" +
+    " implemented.";
             this.lvwPacketData.Location = new System.Drawing.Point(0, 0);
             this.lvwPacketData.Name = "lvwPacketData";
+            this.lvwPacketData.OwnerDraw = true;
+            this.lvwPacketData.ShowGroups = false;
             this.lvwPacketData.Size = new System.Drawing.Size(441, 357);
             this.lvwPacketData.TabIndex = 0;
             this.lvwPacketData.UseCompatibleStateImageBehavior = false;
             this.lvwPacketData.View = System.Windows.Forms.View.Details;
+            this.lvwPacketData.VirtualMode = true;
+            // 
+            // olvColumnBitOffset
+            // 
+            this.olvColumnBitOffset.AspectName = "BitOffset";
+            this.olvColumnBitOffset.CellPadding = null;
+            this.olvColumnBitOffset.Text = "Bit offset";
+            // 
+            // olvColumnByteOffset
+            // 
+            this.olvColumnByteOffset.AspectName = "ByteOffset";
+            this.olvColumnByteOffset.CellPadding = null;
+            this.olvColumnByteOffset.Text = "Byte offset";
+            // 
+            // olvColumnName
+            // 
+            this.olvColumnName.AspectName = "Name";
+            this.olvColumnName.CellPadding = null;
+            this.olvColumnName.Text = "Name";
+            // 
+            // olvColumnValue
+            // 
+            this.olvColumnValue.AspectName = "Value";
+            this.olvColumnValue.CellPadding = null;
+            this.olvColumnValue.Text = "Value";
+            // 
+            // olvColumnType
+            // 
+            this.olvColumnType.AspectName = "TypeName";
+            this.olvColumnType.CellPadding = null;
+            this.olvColumnType.Text = "Type";
+            // 
+            // olvColumnBitLength
+            // 
+            this.olvColumnBitLength.AspectName = "BitLength";
+            this.olvColumnBitLength.CellPadding = null;
+            this.olvColumnBitLength.Text = "Bit length";
+            // 
+            // olvColumnByteLength
+            // 
+            this.olvColumnByteLength.AspectName = "ByteLength";
+            this.olvColumnByteLength.CellPadding = null;
+            this.olvColumnByteLength.Text = "Byte length";
+            // 
+            // olvColumnBits
+            // 
+            this.olvColumnBits.AspectName = "Bits";
+            this.olvColumnBits.CellPadding = null;
+            this.olvColumnBits.Text = "Bit representation";
             // 
             // frmInspectPacket
             // 
@@ -53,12 +132,22 @@
             this.ResizeBegin += new System.EventHandler(this.frmInspectPacket_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.frmInspectPacket_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.frmInspectPacket_SizeChanged);
+            ((System.ComponentModel.ISupportInitialize)(this.lvwPacketData)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListView lvwPacketData;
+        private BrightIdeasSoftware.FastObjectListView lvwPacketData;
+        private BrightIdeasSoftware.OLVColumn olvColumnBitOffset;
+        private BrightIdeasSoftware.OLVColumn olvColumnByteOffset;
+        private BrightIdeasSoftware.OLVColumn olvColumnName;
+        private BrightIdeasSoftware.OLVColumn olvColumnValue;
+        private BrightIdeasSoftware.OLVColumn olvColumnType;
+        private BrightIdeasSoftware.OLVColumn olvColumnBitLength;
+        private BrightIdeasSoftware.OLVColumn olvColumnByteLength;
+        private BrightIdeasSoftware.OLVColumn olvColumnBits;
+
     }
 }

@@ -109,7 +109,6 @@
             this.olvColumnDirection,
             this.olvColumnOpcode,
             this.olvColumnLength});
-            this.lvwPacketList.DataSource = null;
             this.lvwPacketList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvwPacketList.EmptyListMsg = "No packets here - I\'m starving! :-(\n\nIf you could be so kind as to feed me, I would very much appreciate it.\n\nYou can do so via File -> Load packet dump.\n\nThanks!";
             this.lvwPacketList.FullRowSelect = true;
@@ -182,7 +181,7 @@
         private BrightIdeasSoftware.OLVColumn olvColumnDirection;
         private BrightIdeasSoftware.OLVColumn olvColumnOpcode;
         private BrightIdeasSoftware.OLVColumn olvColumnLength;
-        private BrightIdeasSoftware.FastDataListView lvwPacketList;
+        private BrightIdeasSoftware.FastObjectListView lvwPacketList;
     }
 }
 

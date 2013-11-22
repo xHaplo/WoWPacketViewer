@@ -113,7 +113,7 @@ namespace WoWPacketViewer
         private void LoadPacketDump(List<Packet> packetList)
         {
             // Clear out the existing list.
-            lvwPacketList.Items.Clear();
+            lvwPacketList.ClearObjects();
 
             // Store the packet list for later use.
             _packetList = packetList;
@@ -180,6 +180,9 @@ namespace WoWPacketViewer
                 return;
 
             var selectedItem = (PacketListItem)lvwPacketList.SelectedObject;
+            if (selectedItem.Number > _packetList.Count)
+                return;
+
             var packet = _packetList[selectedItem.Number - 1];
 
             // Reset the packet inspection form first, so as not to confuse users with old data.
