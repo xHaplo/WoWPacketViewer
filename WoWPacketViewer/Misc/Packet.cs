@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Runtime.InteropServices;
 using CustomExtensions;
 using WoWPacketViewer.Enums;
 
@@ -310,6 +311,56 @@ namespace WoWPacketViewer.Misc
         {
             foreach (var value in values)
                 ReadXORByte(ref bytes, value);
+        }
+
+        private long ReadValue(TypeCode code)
+        {
+            long rawValue = 0;
+            switch (code)
+            {
+                case TypeCode.SByte:
+                    rawValue = ReadSByte();
+                    break;
+                case TypeCode.Byte:
+                    rawValue = ReadByte();
+                    break;
+                case TypeCode.Int16:
+                    rawValue = ReadInt16();
+                    break;
+                case TypeCode.UInt16:
+                    rawValue = ReadUInt16();
+                    break;
+                case TypeCode.Int32:
+                    rawValue = ReadInt32();
+                    break;
+                case TypeCode.UInt32:
+                    rawValue = ReadUInt32();
+                    break;
+                case TypeCode.Int64:
+                    rawValue = ReadInt64();
+                    break;
+                case TypeCode.UInt64:
+                    rawValue = (long)ReadUInt64();
+                    break;
+            }
+            return rawValue;
+        }
+
+        public T ReadEnum<T>(TypeCode code)
+        {
+            long rawValue = ReadValue(code);
+            return (T)Enum.ToObject(typeof(T), rawValue);
+        }
+
+        public T ReadEnum<T>(TypeCode code, string name, params object[] args)
+        {
+            long rawValue = ReadValue(code);
+            var result = (T)Enum.ToObject(typeof(T), rawValue);
+            var size = Marshal.SizeOf(Enum.GetUnderlyingType(typeof(T)));
+
+            var bits = new BitArray(BitConverter.GetBytes(rawValue).SubArray(0, size));
+            AddRead(name, result.GetFullName(), typeof(T), size, bits, false, args);
+            return result;
         }
     }
 }

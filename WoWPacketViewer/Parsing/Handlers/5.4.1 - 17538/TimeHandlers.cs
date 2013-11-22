@@ -33,5 +33,20 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
                 packet.SetLastDataField("{0} ({1})", dateTimes[8], unixTime);
             }
         }
+
+        [Parser(Opcode.CMSG_REALM_SPLIT, 0x0449, Direction.ClientToServer)]
+        public static void HandleRealmSplitRequest(Packet packet)
+        {
+            var clientSplitState = packet.ReadEnum<ClientSplitState>(TypeCode.Int32, "ClientSplitState"); 
+        }
+
+        [Parser(Opcode.SMSG_REALM_SPLIT, 0x0884)]
+        public static void HandleRealmSplitResponse(Packet packet)
+        {
+            packet.ReadEnum<ClientSplitState>(TypeCode.Int32, "ClientSplitState");
+            packet.ReadEnum<PendingSplitState>(TypeCode.Int32, "PendingSplitState");
+            uint length = packet.ReadBits(7, "Date length");
+            string date = packet.ReadString((int) length, "Date");
+        }
     }
 }
