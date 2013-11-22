@@ -191,7 +191,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
             for (int i = 0, b = 0; i < maskSizeBlocks; i++)
             {
                 uint mask = packet.ReadUInt32("{0}. Mask[{1}]", blockId, i);
-                packet.SetLastDataField("{0:X4}", mask);
+                packet.SetLastDataField("{0:X8}", mask);
 
                 var bytes = BitConverter.GetBytes(mask);
                 var blockBits = new BitArray(bytes);
