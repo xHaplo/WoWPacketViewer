@@ -71,6 +71,7 @@
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Utils.cs" />
     <Compile Include="Parsing\ClientBuildAttribute.cs" />
+    <Compile Include="Parsing\Handlers\5.4.1 - 17538\AuthHandlers.cs" />
     <Compile Include="Parsing\Handlers\5.4.1 - 17538\UpdateHandlers.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Parsing\Handler.cs" />
