@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using CustomExtensions;
+using BrightIdeasSoftware;
 using WoWPacketViewer.Misc;
 using WoWPacketViewer.Enums;
 
@@ -35,21 +36,6 @@ namespace WoWPacketViewer
 
             // Add all known versions to the menu & set the newest as default.
             AddAvailableClientVersionsToMenu();
-
-            // Enable double buffering on the packet list to prevent flickering.
-            lvwPacketList.DoubleBuffer();
-
-            // Setup column headers for packet list.
-            var columnHeaders = new ColumnHeader[4];
-            for (var i = 0; i < columnHeaders.Length; i++)
-                columnHeaders[i] = new ColumnHeader();
-
-            columnHeaders[0].Text = "#";
-            columnHeaders[1].Text = "Direction";
-            columnHeaders[2].Text = "Opcode";
-            columnHeaders[3].Text = "Length";
-
-            lvwPacketList.Columns.AddRange(columnHeaders);
 
             // Setup the packet inspection form
             _inspectPacketForm = new frmInspectPacket(this);
@@ -136,16 +122,17 @@ namespace WoWPacketViewer
             for (var i = 0; i < packetList.Count; i++)
             {
                 var packet = packetList[i];
-                var item = new ListViewItem();
+                var item = new PacketListItem();
 
                 // Attach opcode
                 packet.Opcode = Handler.LookupOpcode(_clientBuild, packet.OpcodeValue, packet.Direction);
 
-                item.Text = (i + 1).ToString();
-                item.SubItems.Add(packet.Direction == Direction.ServerToClient ? "S -> C" : "C -> S");
-                item.SubItems.Add(string.Format("{0} (0x{1:X4})", packet.Opcode, packet.OpcodeValue));
-                item.SubItems.Add(packet.Length.ToString());
-                lvwPacketList.Items.Add(item);
+                item.Number = i + 1;
+                item.Direction = (packet.Direction == Direction.ServerToClient ? "S -> C" : "C -> S");
+                item.Opcode = string.Format("{0} (0x{1:X4})", packet.Opcode, packet.OpcodeValue);
+                item.Length = packet.Length;
+
+                lvwPacketList.AddObject(item);
             }
 
             // Resize the column headers to fit the content width
@@ -189,12 +176,11 @@ namespace WoWPacketViewer
 
         private void LoadInfoForSelectedPacket()
         {
-            if (lvwPacketList.SelectedItems == null
-                || lvwPacketList.SelectedItems.Count == 0)
+            if (lvwPacketList.SelectedObject == null)
                 return;
 
-            var selectedItem = lvwPacketList.SelectedItems[0];
-            var packet = _packetList[selectedItem.Index];
+            var selectedItem = (PacketListItem)lvwPacketList.SelectedObject;
+            var packet = _packetList[selectedItem.Number - 1];
 
             // Reset the packet inspection form first, so as not to confuse users with old data.
             _inspectPacketForm.ResetForm();

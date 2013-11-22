@@ -35,8 +35,13 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clientVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lvwPacketList = new System.Windows.Forms.ListView();
+            this.lvwPacketList = new BrightIdeasSoftware.FastDataListView();
+            this.olvColumnNo = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnDirection = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnOpcode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnLength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lvwPacketList)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -95,16 +100,53 @@
             // 
             // lvwPacketList
             // 
+            this.lvwPacketList.AllColumns.Add(this.olvColumnNo);
+            this.lvwPacketList.AllColumns.Add(this.olvColumnDirection);
+            this.lvwPacketList.AllColumns.Add(this.olvColumnOpcode);
+            this.lvwPacketList.AllColumns.Add(this.olvColumnLength);
+            this.lvwPacketList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.olvColumnNo,
+            this.olvColumnDirection,
+            this.olvColumnOpcode,
+            this.olvColumnLength});
+            this.lvwPacketList.DataSource = null;
             this.lvwPacketList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvwPacketList.EmptyListMsg = "No packets here - I\'m starving! :-(\n\nIf you could be so kind as to feed me, I would very much appreciate it.\n\nYou can do so via File -> Load packet dump.\n\nThanks!";
             this.lvwPacketList.FullRowSelect = true;
             this.lvwPacketList.GridLines = true;
             this.lvwPacketList.Location = new System.Drawing.Point(0, 24);
             this.lvwPacketList.Name = "lvwPacketList";
+            this.lvwPacketList.ShowGroups = false;
             this.lvwPacketList.Size = new System.Drawing.Size(487, 364);
             this.lvwPacketList.TabIndex = 1;
             this.lvwPacketList.UseCompatibleStateImageBehavior = false;
             this.lvwPacketList.View = System.Windows.Forms.View.Details;
+            this.lvwPacketList.VirtualMode = true;
             this.lvwPacketList.DoubleClick += new System.EventHandler(this.lvwPacketList_DoubleClick);
+            // 
+            // olvColumnNo
+            // 
+            this.olvColumnNo.AspectName = "Number";
+            this.olvColumnNo.CellPadding = null;
+            this.olvColumnNo.Text = "#";
+            // 
+            // olvColumnDirection
+            // 
+            this.olvColumnDirection.AspectName = "Direction";
+            this.olvColumnDirection.CellPadding = null;
+            this.olvColumnDirection.Text = "Direction";
+            // 
+            // olvColumnOpcode
+            // 
+            this.olvColumnOpcode.AspectName = "Opcode";
+            this.olvColumnOpcode.CellPadding = null;
+            this.olvColumnOpcode.Text = "Opcode";
+            // 
+            // olvColumnLength
+            // 
+            this.olvColumnLength.AspectName = "Length";
+            this.olvColumnLength.CellPadding = null;
+            this.olvColumnLength.Text = "Length";
             // 
             // frmMain
             // 
@@ -121,6 +163,7 @@
             this.SizeChanged += new System.EventHandler(this.frmMain_SizeChanged);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lvwPacketList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,7 +178,11 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clientVersionToolStripMenuItem;
-        private System.Windows.Forms.ListView lvwPacketList;
+        private BrightIdeasSoftware.OLVColumn olvColumnNo;
+        private BrightIdeasSoftware.OLVColumn olvColumnDirection;
+        private BrightIdeasSoftware.OLVColumn olvColumnOpcode;
+        private BrightIdeasSoftware.OLVColumn olvColumnLength;
+        private BrightIdeasSoftware.FastDataListView lvwPacketList;
     }
 }
 
