@@ -165,7 +165,7 @@ namespace WoWPacketViewer.Misc
         {
             var result = base.ReadBytes(len);
             var bits = new BitArray(result);
-            AddRead(name, result.ToHexString(), typeof(byte), sizeof(byte) * len, bits, false, args);
+            AddRead(name, result.ToHexString(), typeof(byte[]), sizeof(byte) * len, bits, false, args);
             return result;
         }
 
