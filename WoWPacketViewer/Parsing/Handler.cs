@@ -14,23 +14,26 @@ namespace WoWPacketViewer
 
     public static class Handler
     {
-        private static HandlerMap _packetHandlers;
-        private static OpcodeMap _opcodeMap;
+        private static HandlerMap _serverPacketHandlers;
+        private static HandlerMap _clientPacketHandlers;
+        private static OpcodeMap _serverOpcodeMap;
+        private static OpcodeMap _clientOpcodeMap;
 
         public static void LoadHandlers()
         {
             var types = Assembly.GetExecutingAssembly().GetTypes();
             var identifiedClientBuilds = new List<uint>();
 
-            _packetHandlers = new HandlerMap();
-            _opcodeMap = new OpcodeMap();
+            _serverPacketHandlers = new HandlerMap();
+            _clientPacketHandlers = new HandlerMap();
+            _serverOpcodeMap = new OpcodeMap();
+            _clientOpcodeMap = new OpcodeMap();
 
             foreach (var type in types)
             {
                 if (!type.IsAbstract
                     || !type.IsPublic)
                     continue;
-
 
                 // Require each handler class to define the client build.
                 var classAttributes = (ClientBuildAttribute[])type.GetCustomAttributes(typeof(ClientBuildAttribute), false);
@@ -54,29 +57,42 @@ namespace WoWPacketViewer
                     if (attributes.Length == 0)
                         continue;
 
-                    foreach (var attribute in attributes)
+                    var attribute = attributes[0];
+                    if (attribute.OpcodeValue == 0)
+                        continue;
+
+                    var key = CreateKey(clientBuild, attribute.OpcodeValue);
+                    var handler = (PacketHandler)Delegate.CreateDelegate(typeof(PacketHandler), method);
+
+                    OpcodeMap opcodeMap;
+                    HandlerMap handlerMap;
+
+                    if (attribute.Direction == Direction.ClientToServer)
                     {
-                        if (attribute.OpcodeValue == 0)
-                            continue;
-
-                        var key = new KeyValuePair<uint, uint>(clientBuild, attribute.OpcodeValue);
-                        var handler = (PacketHandler)Delegate.CreateDelegate(typeof(PacketHandler), method);
-                        if (_packetHandlers.ContainsKey(key))
-                        {
-                            Debug.Print("Handler already found for opcode 0x{0:X4} ({1}) of client build {2}.", 
-                                attribute.OpcodeValue, attribute.Opcode, clientBuild);
-                            continue;
-                        }
-
-                        if (!identifiedClientBuilds.Contains(clientBuild))
-                            identifiedClientBuilds.Add(clientBuild);
-
-                        _packetHandlers[key] = handler;
-                        _opcodeMap[key] = attribute.Opcode;
-
-                        Debug.Print("Handler added for opcode 0x{0:X4} ({1}) of client build {2}.",
-                            attribute.OpcodeValue, attribute.Opcode, clientBuild);
+                        opcodeMap = _clientOpcodeMap;
+                        handlerMap = _clientPacketHandlers;
                     }
+                    else
+                    {
+                        opcodeMap = _serverOpcodeMap;
+                        handlerMap = _serverPacketHandlers;
+                    }
+
+                    if (handlerMap.ContainsKey(key))
+                    {
+                        Debug.Print("Handler already found for opcode 0x{0:X4} ({1}) of client build {2}.", 
+                            attribute.OpcodeValue, attribute.Opcode, clientBuild);
+                        continue;
+                    }
+
+                    if (!identifiedClientBuilds.Contains(clientBuild))
+                        identifiedClientBuilds.Add(clientBuild);
+
+                    handlerMap[key] = handler;
+                    opcodeMap[key] = attribute.Opcode;
+
+                    Debug.Print("Handler added for opcode 0x{0:X4} ({1}) of client build {2}.",
+                        attribute.OpcodeValue, attribute.Opcode, clientBuild);
                 }
             }
 
@@ -85,20 +101,29 @@ namespace WoWPacketViewer
                 ClientVersion.AddAvailableVersion(clientBuild);
         }
 
-        public static Opcode LookupOpcode(uint clientBuild, uint opcodeValue)
+        private static KeyValuePair<uint, uint> CreateKey(uint clientBuild, uint opcodeValue)
         {
-            var key = new KeyValuePair<uint, uint>(clientBuild, opcodeValue);
-            if (!_opcodeMap.ContainsKey(key))
+            return new KeyValuePair<uint,uint>(clientBuild, opcodeValue);
+        }
+
+        public static Opcode LookupOpcode(uint clientBuild, uint opcodeValue, Direction direction)
+        {
+            var key = CreateKey(clientBuild, opcodeValue);
+            var opcodeMap = (direction == Direction.ClientToServer ? _clientOpcodeMap : _serverOpcodeMap);
+
+            if (!opcodeMap.ContainsKey(key))
                 return Opcode.NO_REGISTERED_HANDLER;
 
-            return _opcodeMap[key];
+            return opcodeMap[key];
         }
 
         public static bool HandlePacket(uint clientBuild, Packet packet)
         {
-            var key = new KeyValuePair<uint, uint>(clientBuild, packet.OpcodeValue);
+            var key = CreateKey(clientBuild, packet.OpcodeValue);
+            var handlerMap = (packet.Direction == Direction.ClientToServer ? _clientPacketHandlers : _serverPacketHandlers);
+
             if (packet.Opcode == Opcode.NO_REGISTERED_HANDLER
-                || !_packetHandlers.ContainsKey(key))
+                || !handlerMap.ContainsKey(key))
             {
                 Debug.Print("No handler for opcode {0} (0x{1:X4}) under client build {2}.",
                     packet.Opcode, packet.OpcodeValue, clientBuild);
@@ -111,7 +136,7 @@ namespace WoWPacketViewer
             // Load the handler.
             try
             {
-                _packetHandlers[key](packet);
+                handlerMap[key](packet);
             }
             catch (Exception ex)
             {

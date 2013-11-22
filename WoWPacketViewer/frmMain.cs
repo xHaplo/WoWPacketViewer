@@ -139,7 +139,7 @@ namespace WoWPacketViewer
                 var item = new ListViewItem();
 
                 // Attach opcode
-                packet.Opcode = Handler.LookupOpcode(_clientBuild, packet.OpcodeValue);
+                packet.Opcode = Handler.LookupOpcode(_clientBuild, packet.OpcodeValue, packet.Direction);
 
                 item.Text = (i + 1).ToString();
                 item.SubItems.Add(packet.Direction == Direction.ServerToClient ? "S -> C" : "C -> S");
