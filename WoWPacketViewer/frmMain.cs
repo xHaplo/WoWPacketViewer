@@ -19,6 +19,7 @@ namespace WoWPacketViewer
         private ToolStripMenuItem _checkedClientVersionMenu;
         private List<Packet> _packetList;
         private string _baseTitle;
+        private bool _resizing = false;
 
         private frmInspectPacket _inspectPacketForm;
 
@@ -151,9 +152,21 @@ namespace WoWPacketViewer
             ResizeColumnHeaders();
         }
 
+        private void frmMain_SizeChanged(object sender, EventArgs e)
+        {
+            if (!_resizing)
+                ResizeColumnHeaders();
+        }
+
+        private void frmMain_ResizeBegin(object sender, EventArgs e)
+        {
+            _resizing = true;
+        }
+
         private void frmMain_ResizeEnd(object sender, EventArgs e)
         {
             ResizeColumnHeaders();
+            _resizing = false;
         }
 
         private void ResizeColumnHeaders()

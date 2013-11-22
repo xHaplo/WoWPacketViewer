@@ -90,7 +90,7 @@
             // clientVersionToolStripMenuItem
             // 
             this.clientVersionToolStripMenuItem.Name = "clientVersionToolStripMenuItem";
-            this.clientVersionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clientVersionToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.clientVersionToolStripMenuItem.Text = "Client version";
             // 
             // lvwPacketList
@@ -116,7 +116,9 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "frmMain";
             this.Text = "WoW packet viewer";
+            this.ResizeBegin += new System.EventHandler(this.frmMain_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.frmMain_ResizeEnd);
+            this.SizeChanged += new System.EventHandler(this.frmMain_SizeChanged);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);

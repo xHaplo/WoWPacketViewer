@@ -15,6 +15,7 @@ namespace WoWPacketViewer
     {
         private frmMain _mainForm;
         private string _baseTitle;
+        private bool _resizing = false;
 
         public frmInspectPacket(frmMain mainForm)
         {
@@ -98,9 +99,21 @@ namespace WoWPacketViewer
             }
         }
 
+        private void frmInspectPacket_SizeChanged(object sender, EventArgs e)
+        {
+            if (!_resizing)
+                ResizeColumnHeaders();
+        }
+
+        private void frmInspectPacket_ResizeBegin(object sender, EventArgs e)
+        {
+            _resizing = true;
+        }
+
         private void frmInspectPacket_ResizeEnd(object sender, EventArgs e)
         {
             ResizeColumnHeaders();
+            _resizing = false;
         }
 
         private void ResizeColumnHeaders()

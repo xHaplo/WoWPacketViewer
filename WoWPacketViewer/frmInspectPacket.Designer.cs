@@ -50,7 +50,9 @@
             this.Name = "frmInspectPacket";
             this.Text = "Inspect packet";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmInspectPacket_FormClosing);
+            this.ResizeBegin += new System.EventHandler(this.frmInspectPacket_ResizeBegin);
             this.ResizeEnd += new System.EventHandler(this.frmInspectPacket_ResizeEnd);
+            this.SizeChanged += new System.EventHandler(this.frmInspectPacket_SizeChanged);
             this.ResumeLayout(false);
 
         }
