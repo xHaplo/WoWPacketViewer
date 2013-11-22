@@ -2,7 +2,8 @@
 {
     public enum ObjectFields
     {
-        Guid = 0x0,
+        GuidLo = 0x0,
+        GuidHi = 0x1,
         Data = 0x2,
         Type = 0x4,
         Entry = 0x5,
