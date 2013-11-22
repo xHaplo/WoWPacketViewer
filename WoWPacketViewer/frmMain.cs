@@ -188,13 +188,10 @@ namespace WoWPacketViewer
             // Reset the packet inspection form first, so as not to confuse users with old data.
             _inspectPacketForm.ResetForm();
 
-            // Load packet data in form
-            if (!Handler.HandlePacket(_clientBuild, packet))
-            {
-                DisplayError("There is no registered handler for this packet. I do not know how to handle it.");
-                return;
-            }
+            // Load packet data
+            Handler.HandlePacket(_clientBuild, packet);
 
+            // Load packet data into the form.
             _inspectPacketForm.LoadPacketData(packet);
 
             // Show the form, or re-activate it if it's minimised.
