@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Collections;
+using System.Collections.Generic;
 using CustomExtensions;
 using WoWPacketViewer.Enums;
 using WoWPacketViewer.Misc;
@@ -82,6 +84,73 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
 
             accountNameLength = packet.ReadBits(11, "accountNameLength");
             accountName = packet.ReadString((int) accountNameLength, "accountName");
+        }
+
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, 0x0D05)]
+        public static void HandleAuthResponse(Packet packet)
+        {
+            var authCode = (AuthCodes) packet.ReadByte("authCode");
+            packet.SetLastDataField(authCode.GetFullName());
+
+            if (authCode != AuthCodes.AUTH_OK)
+                return;
+
+            Bit isInQueue, hasQueuePosition, hasAccountData,
+                unk0, unk3, unk4, unk5;
+            uint unk1, unk2, realmRaceCount = 0, realmClassCount = 0,
+                unk6, unk7, unk8, unk9, unk10, queuePosition;
+            byte accountExpansion1, accountExpansion2;
+
+            var raceMap = new Dictionary<byte, byte>();
+            var classMap = new Dictionary<byte, byte>();
+
+            isInQueue = packet.ReadBit("IsInQueue");
+            if (isInQueue)
+                hasQueuePosition = packet.ReadBit("HasQueuePosition"); // seems that way, not 100% sure
+
+            hasAccountData = packet.ReadBit("HasAccountData");
+            if (hasAccountData)
+            {
+                unk0 = packet.ReadBit("Unk0");
+                unk1 = packet.ReadBits(21, "Unk1");
+                unk2 = packet.ReadBits(21, "Unk2");
+                realmRaceCount = packet.ReadBits(23, "RealmRaceCount");
+                unk3 = packet.ReadBit("Unk3");
+                unk4 = packet.ReadBit("Unk4");
+                unk5 = packet.ReadBit("Unk5");
+                realmClassCount = packet.ReadBits(23, "RealmClassCount");
+            }
+
+            if (packet.BitsRemaining() > 0)
+                packet.ReadBits(packet.BitsRemaining());
+
+            if (hasAccountData)
+            {
+                unk6 = packet.ReadUInt32("Unk6");
+                unk7 = packet.ReadUInt32("Unk7");
+                accountExpansion1 = packet.ReadByte("AccountExpansion1");
+
+                for (int r = 0; r < realmRaceCount; r++)
+                {
+                    byte expansion = packet.ReadByte("r{0}: expansion", r);
+                    byte race = packet.ReadByte("r{0}: race", r);
+                }
+
+                accountExpansion2 = packet.ReadByte("AccountExpansion2");
+                unk8 = packet.ReadUInt32("Unk8");
+
+                for (int c = 0; c < realmClassCount; c++)
+                {
+                    byte class_ = packet.ReadByte("c{0}: class", c);
+                    byte expansion = packet.ReadByte("c{0}: expansion", c);
+                }
+
+                unk9 = packet.ReadUInt32("Unk9");
+                unk10 = packet.ReadUInt32("Unk10");
+            }
+
+            if (isInQueue)
+                queuePosition = packet.ReadUInt32("Queue position");
         }
     }
 }

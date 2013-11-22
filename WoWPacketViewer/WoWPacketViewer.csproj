@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\AuthCodes.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\ObjectType.cs" />
