@@ -17,5 +17,18 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
         {
             uint cacheVersion = packet.ReadUInt32("CacheVersion");
         }
+
+        [Parser(Opcode.CMSG_LOAD_SCREEN, 0x1148, Direction.ClientToServer)]
+        public static void HandleLoadingScreenOpcode(Packet packet)
+        {
+            uint mapId = packet.ReadUInt32("Map ID");
+            bool loadingScreenEnabled = packet.ReadBit("loadingScreenEnabled");
+        }
+
+        [Parser(Opcode.CMSG_VIOLENCE_LEVEL, 0x13CD, Direction.ClientToServer)]
+        public static void HandleViolenceLevelOpcode(Packet packet)
+        {
+            byte violenceLevel = packet.ReadByte("Violence level");
+        }
     }
 }
