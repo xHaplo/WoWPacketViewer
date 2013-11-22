@@ -160,6 +160,14 @@ namespace WoWPacketViewer.Misc
             return result;
         }
 
+        public byte[] ReadBytes(int len, string name, params object[] args)
+        {
+            var result = base.ReadBytes(len);
+            var bits = new BitArray(result);
+            AddRead(name, result.ToHexString(), typeof(byte), sizeof(byte) * len, bits, false, args);
+            return result;
+        }
+
         public ushort ReadUInt16(string name, params object[] args)
         {
             var result = base.ReadUInt16();

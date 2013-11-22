@@ -109,7 +109,16 @@ namespace WoWPacketViewer
             packet.Reset();
 
             // Load the handler.
-            _packetHandlers[key](packet);
+            try
+            {
+                _packetHandlers[key](packet);
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
+                Debug.Print(ex.StackTrace);
+            }
+
             return true;
         }
     }
