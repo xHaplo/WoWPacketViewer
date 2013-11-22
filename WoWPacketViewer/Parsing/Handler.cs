@@ -94,7 +94,7 @@ namespace WoWPacketViewer
             return _opcodeMap[key];
         }
 
-        public static void HandlePacket(uint clientBuild, Packet packet)
+        public static bool HandlePacket(uint clientBuild, Packet packet)
         {
             var key = new KeyValuePair<uint, uint>(clientBuild, packet.OpcodeValue);
             if (packet.Opcode == Opcode.NO_REGISTERED_HANDLER
@@ -102,10 +102,15 @@ namespace WoWPacketViewer
             {
                 Debug.Print("No handler for opcode {0} (0x{1:X4}) under client build {2}.",
                     packet.Opcode, packet.OpcodeValue, clientBuild);
-                return;
+                return false;
             }
 
+            // Reset packet
+            packet.Reset();
+
+            // Load the handler.
             _packetHandlers[key](packet);
+            return true;
         }
     }
 }

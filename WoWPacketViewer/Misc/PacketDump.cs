@@ -50,7 +50,12 @@ namespace WoWPacketViewer.Misc
 
                             if (line.StartsWith(arctiumOpcodeIndicator))
                             {
-                                var s = line.Substring(arctiumOpcodeIndicator.Length, 4);
+                                // isn't necessarily 4 digits long, so go to the space.
+                                var startPos = arctiumOpcodeIndicator.Length;
+                                var endPos = line.IndexOf(' ', startPos);
+                                var length = endPos - startPos;
+                                var s = line.Substring(startPos, length);
+
                                 opcode = Convert.ToUInt32(s, 16);
                             }
                             else if (line.StartsWith(ascentClientOpcodeIndicator))

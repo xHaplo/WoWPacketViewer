@@ -20,6 +20,8 @@ namespace WoWPacketViewer
         private List<Packet> _packetList;
         private string _baseTitle;
 
+        private frmInspectPacket _inspectPacketForm;
+
         public frmMain()
         {
             InitializeComponent();
@@ -33,9 +35,10 @@ namespace WoWPacketViewer
             // Add all known versions to the menu & set the newest as default.
             AddAvailableClientVersionsToMenu();
 
-            // Setup packet list.
+            // Enable double buffering on the packet list to prevent flickering.
             lvwPacketList.DoubleBuffer();
 
+            // Setup column headers for packet list.
             var columnHeaders = new ColumnHeader[4];
             for (var i = 0; i < columnHeaders.Length; i++)
                 columnHeaders[i] = new ColumnHeader();
@@ -46,6 +49,9 @@ namespace WoWPacketViewer
             columnHeaders[3].Text = "Length";
 
             lvwPacketList.Columns.AddRange(columnHeaders);
+
+            // Setup the packet inspection form
+            _inspectPacketForm = new frmInspectPacket(this);
         }
 
         private void AddAvailableClientVersionsToMenu()
@@ -177,8 +183,22 @@ namespace WoWPacketViewer
             var selectedItem = lvwPacketList.SelectedItems[0];
             var packet = _packetList[selectedItem.Index];
 
-            Handler.HandlePacket(_clientBuild, packet);
-            System.Diagnostics.Debug.Print("Text: {0}, opcode: {1} ({2:X4})", selectedItem.Text, packet.Opcode, packet.OpcodeValue);
+            // Reset the packet inspection form first, so as not to confuse users with old data.
+            _inspectPacketForm.ResetForm();
+
+            // Load packet data in form
+            if (!Handler.HandlePacket(_clientBuild, packet))
+            {
+                DisplayError("There is no registered handler for this packet. I do not know how to handle it.");
+                return;
+            }
+
+            _inspectPacketForm.LoadPacketData(packet);
+
+            // Show the form, or re-activate it if it's minimised.
+            _inspectPacketForm.Show();
+            _inspectPacketForm.WindowState = FormWindowState.Normal;
+            _inspectPacketForm.Activate();
         }
     }
 }
