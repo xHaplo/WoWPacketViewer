@@ -12,6 +12,18 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
     [ClientBuild(17538)]
     public static class MiscHandlers
     {
+        [Parser(Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57, Direction.ServerToClient)]
+        public static void HandleClientVerifyConnectivity(Packet packet)
+        {
+            var message = packet.ReadCString("Message");
+        }
+
+        [Parser(Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57, Direction.ClientToServer)]
+        public static void HandleServerVerifyConnectivity(Packet packet)
+        {
+            var message = packet.ReadCString("Message");
+        }
+
         [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, 0x1037)]
         public static void HandleAuthResponse(Packet packet)
         {
