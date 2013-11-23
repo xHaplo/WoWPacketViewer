@@ -149,9 +149,20 @@ namespace WoWPacketViewer
                 || !lvwPacketData.Focused)
                 return;
 
-            // Select the bytes in the hex box that the selected read data corresponds to
             var item = (PacketReadItem)lvwPacketData.SelectedObject;
-            hexBox.Select((int)item.ByteOffset, item.ByteLength);
+
+            // If we encounter any items that aren't directly in the packet (but were constructed using the data)
+            // we should simply unselect the existing data (otherwise it'll be confusing).
+            if (item.BitOffset < 0)
+            {
+                hexBox.SelectionStart = 0;
+                hexBox.SelectionLength = 0;
+            }
+            // Select the bytes in the hex box that the selected read data corresponds to
+            else
+            {
+                hexBox.Select((int)item.ByteOffset, item.ByteLength);
+            }
         }
 
         private void hexBox_SelectionLengthChanged(object sender, EventArgs e)
