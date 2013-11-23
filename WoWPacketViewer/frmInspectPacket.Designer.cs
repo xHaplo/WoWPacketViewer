@@ -63,6 +63,8 @@
             this.olvColumnBits});
             this.lvwPacketData.EmptyListMsg = "No reads.\n\nEither an acknowledgement/request packet, or the handler has yet to be" +
     " implemented.";
+            this.lvwPacketData.FullRowSelect = true;
+            this.lvwPacketData.GridLines = true;
             this.lvwPacketData.Location = new System.Drawing.Point(3, 3);
             this.lvwPacketData.Name = "lvwPacketData";
             this.lvwPacketData.OwnerDraw = true;
