@@ -48,5 +48,24 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
         {
             byte active = packet.ReadByte("Active");
         }
+
+        [Parser(Opcode.CMSG_LOG_DISCONNECT, 0x14FA, Direction.ClientToServer)]
+        public static void HandleDisconnectReason(Packet packet)
+        {
+            uint disconnectReason = packet.ReadUInt32("Disconnect reason");
+        }
+
+        [Parser(Opcode.CMSG_PING, 0x11E6, Direction.ClientToServer)]
+        public static void HandlePing(Packet packet)
+        {
+            uint latency = packet.ReadUInt32("Latency");
+            uint sequence = packet.ReadUInt32("Sequence");
+        }
+
+        [Parser(Opcode.SMSG_PONG, 0x005D, Direction.ServerToClient)]
+        public static void HandlePong(Packet packet)
+        {
+            uint sequence = packet.ReadUInt32("Sequence");
+        }
     }
 }
