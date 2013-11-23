@@ -42,5 +42,11 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
         {
             byte violenceLevel = packet.ReadByte("Violence level");
         }
+
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER, 0x1A4D, Direction.ClientToServer)]
+        public static void HandleActivePlayer(Packet packet)
+        {
+            byte active = packet.ReadByte("Active");
+        }
     }
 }

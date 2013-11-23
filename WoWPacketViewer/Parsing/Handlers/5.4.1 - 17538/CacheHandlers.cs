@@ -54,5 +54,17 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
 
             // TODO: Handle rest of packet (for various DB types)
         }
+
+        [Parser(Opcode.CMSG_NAME_QUERY, 0x11E9, Direction.ClientToServer)]
+        public static void HandleNameQueryRequest(Packet packet)
+        {
+            // TODO
+        }
+
+        [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1407)]
+        public static void HandleNameQueryResponse(Packet packet)
+        {
+            // TODO
+        }
     }
 }
