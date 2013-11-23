@@ -3,7 +3,7 @@ using WoWPacketViewer.Enums;
 
 namespace WoWPacketViewer
 {
-    struct PacketReadItem
+    class PacketReadItem
     {
         public int BitOffset
         {
@@ -59,7 +59,7 @@ namespace WoWPacketViewer
         {
             get
             {
-                return string.Format("{0}B ({1} bits)", ByteLength, BitLength);
+                return string.Format("{0} ({1} bits)", ByteLength, BitLength);
             }
         }
 

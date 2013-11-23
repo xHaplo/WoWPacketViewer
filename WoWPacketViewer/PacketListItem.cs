@@ -2,7 +2,7 @@
 
 namespace WoWPacketViewer
 {
-    struct PacketListItem
+    class PacketListItem
     {
         public int Number
         {
