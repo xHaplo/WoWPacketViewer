@@ -28,10 +28,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
 
             for (uint blockId = 0; blockId < blockCount; blockId++)
             {
-                byte updateType = packet.ReadByte("{0}: Update type", blockId);
-                UpdateType type = (UpdateType)updateType;
-
-                packet.SetLastDataField("UpdateType.{0}", type.ToString());
+                var type = (UpdateType) packet.ReadEnum<UpdateType>(TypeCode.Byte, "{0}: Update type", blockId);
                 Debug.Print("Block {0}: {1}", blockId, type.ToString());
 
                 switch (type)
@@ -52,8 +49,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
         private static void HandleCreateUpdateBlock(uint blockId, Packet packet, UpdateType updateType)
         {
             Guid guid = packet.ReadPackedGUID("{0}: Guid (packed)", blockId);
-            ObjectType objectTypeId = (ObjectType) packet.ReadByte("{0}: Object type", blockId);
-            packet.SetLastDataField("ObjectType.{0}", objectTypeId.ToString());
+            var objectTypeId = packet.ReadEnum<ObjectType>(TypeCode.Byte, "{0}: Object type", blockId);
 
             HandleMovementUpdate(blockId, packet);
             HandleValuesUpdate(blockId, updateType, objectTypeId, packet);

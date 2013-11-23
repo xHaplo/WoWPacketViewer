@@ -416,7 +416,30 @@ namespace WoWPacketViewer.Misc
         {
             long rawValue = ReadValue(code);
             var result = (T)Enum.ToObject(typeof(T), rawValue);
-            var size = Marshal.SizeOf(Enum.GetUnderlyingType(typeof(T)));
+            var size = 0;
+
+            switch (code)
+            {
+                case TypeCode.Byte:
+                case TypeCode.SByte:
+                case TypeCode.Char:
+                    size = 1;
+                    break;
+
+                case TypeCode.UInt16:
+                case TypeCode.Int16:
+                    size = 2;
+                    break;
+
+                case TypeCode.UInt64:
+                case TypeCode.Int64:
+                    size = 8;
+                    break;
+
+                default:
+                    size = 4;
+                    break;
+            }
 
             var bits = new BitArray(BitConverter.GetBytes(rawValue).SubArray(0, size));
             AddRead(name, result.GetFullName(), typeof(T), size, bits, false, args);
