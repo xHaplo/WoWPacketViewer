@@ -168,18 +168,63 @@ namespace WoWPacketViewer.Misc
 
         public sbyte ReadSByte(string name, params object[] args)
         {
-            var result = (sbyte)base.ReadByte();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(sbyte), sizeof(sbyte), bits, false, args);
-            return result;
+            return _Read((sbyte)base.ReadByte(), name, args);
         }
 
         public byte ReadByte(string name, params object[] args)
         {
-            var result = base.ReadByte();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(byte), sizeof(byte), bits, false, args);
-            return result;
+            return _Read(base.ReadByte(), name, args);
+        }
+
+        public ushort ReadUInt16(string name, params object[] args)
+        {
+            return _Read(base.ReadUInt16(), name, args);
+        }
+
+        public short ReadInt16(string name, params object[] args)
+        {
+            return _Read(base.ReadInt16(), name, args);
+        }
+
+        public uint ReadUInt32(string name, params object[] args)
+        {
+            return _Read(base.ReadUInt32(), name, args);
+        }
+
+        public int ReadInt32(string name, params object[] args)
+        {
+            return _Read(base.ReadInt32(), name, args);
+        }
+
+        public float ReadSingle(string name, params object[] args)
+        {
+            return _Read(base.ReadSingle(), name, args);
+        }
+
+        public ulong ReadUInt64(string name, params object[] args)
+        {
+            return _Read(base.ReadUInt64(), name, args);
+        }
+
+        public long ReadInt64(string name, params object[] args)
+        {
+            return _Read(base.ReadInt64(), name, args);
+        }
+
+        private T _Read<T>(T value, string name, params object[] args)
+            where T : struct
+        {
+            byte[] bytes;
+            var size = Marshal.SizeOf(typeof(T));
+
+            if (size == 1)
+                bytes = new byte[1] { (byte)((object)value) };
+            else
+                bytes = (byte[])typeof(BitConverter).GetMethod("GetBytes", new[] { typeof(T) }).Invoke(null, new object[] { value });
+
+            var bits = new BitArray(bytes);
+            AddRead(name, value.ToString(), typeof(T), size, bits, false, args);
+            return value;
         }
 
         public byte[] ReadBytes(int len, string name, params object[] args)
@@ -190,28 +235,11 @@ namespace WoWPacketViewer.Misc
             return result;
         }
 
-        public ushort ReadUInt16(string name, params object[] args)
+        public void ReadUInt64(byte[] bytes, string name, params object[] args)
         {
-            var result = base.ReadUInt16();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(ushort), sizeof(ushort), bits, false, args);
-            return result;
-        }
-
-        public short ReadInt16(string name, params object[] args)
-        {
-            var result = base.ReadInt16();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(short), sizeof(short), bits, false, args);
-            return result;
-        }
-
-        public uint ReadUInt32(string name, params object[] args)
-        {
-            var result = base.ReadUInt32();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(uint), sizeof(uint), bits, false, args);
-            return result;
+            var guid = BitConverter.ToUInt64(bytes, 0);
+            var bits = new BitArray(bytes);
+            AddIgnoredRead(name, guid.ToString(), typeof(ulong), sizeof(ulong), bits, true, args);
         }
 
         public DateTime ReadDateTime(string name, params object[] args)
@@ -220,38 +248,6 @@ namespace WoWPacketViewer.Misc
             var result = Utils.GetDateTimeFromUnixTime(timestamp);
             var bits = new BitArray(BitConverter.GetBytes(timestamp));
             AddRead(name, string.Format("{0} ({1})", result.ToString(), timestamp), typeof(DateTime), sizeof(uint), bits, false, args);
-            return result;
-        }
-
-        public int ReadInt32(string name, params object[] args)
-        {
-            var result = base.ReadInt32();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(int), sizeof(int), bits, false, args);
-            return result;
-        }
-
-        public float ReadSingle(string name, params object[] args)
-        {
-            var result = base.ReadSingle();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(float), sizeof(float), bits, false, args);
-            return result;
-        }
-
-        public ulong ReadUInt64(string name, params object[] args)
-        {
-            var result = base.ReadUInt64();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(ulong), sizeof(ulong), bits, false, args);
-            return result;
-        }
-
-        public long ReadInt64(string name, params object[] args)
-        {
-            var result = base.ReadInt64();
-            var bits = new BitArray(BitConverter.GetBytes(result));
-            AddRead(name, result.ToString(), typeof(long), sizeof(long), bits, false, args);
             return result;
         }
 
@@ -463,13 +459,6 @@ namespace WoWPacketViewer.Misc
 
             AddRead(name, data, typeof(T), size, bits, false, args);
             return result;
-        }
-
-        public void ReadUInt64(byte[] bytes, string name, params object[] args)
-        {
-            var guid = BitConverter.ToUInt64(bytes, 0);
-            var bits = new BitArray(bytes);
-            AddIgnoredRead(name, guid.ToString(), typeof(ulong), sizeof(ulong), bits, true, args);
         }
     }
 }
