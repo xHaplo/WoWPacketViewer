@@ -158,7 +158,9 @@ namespace Be.Windows.Forms
 			#region Mouse selection methods
 			void BeginMouseSelection(object sender, MouseEventArgs e)
 			{
+#if FULL_DEBUG
 				System.Diagnostics.Debug.WriteLine("BeginMouseSelection()", "KeyInterpreter");
+#endif
 
 				if (e.Button != MouseButtons.Left)
 					return;
@@ -218,8 +220,9 @@ namespace Be.Windows.Forms
 			#region PrePrcessWmKeyDown methods
 			public virtual bool PreProcessWmKeyDown(ref Message m)
 			{
+#if FULL_DEBUG
 				System.Diagnostics.Debug.WriteLine("PreProcessWmKeyDown(ref Message m)", "KeyInterpreter");
-
+#endif
 				Keys vc = (Keys)m.WParam.ToInt32();
 
 				Keys keyData = vc | Control.ModifierKeys;
@@ -748,8 +751,9 @@ namespace Be.Windows.Forms
 			#region PreProcessWmKeyUp methods
 			public virtual bool PreProcessWmKeyUp(ref Message m)
 			{
+#if FULL_DEBUG
 				System.Diagnostics.Debug.WriteLine("PreProcessWmKeyUp(ref Message m)", "KeyInterpreter");
-
+#endif
 				Keys vc = (Keys)m.WParam.ToInt32();
 
 				Keys keyData = vc | Control.ModifierKeys;
@@ -954,8 +958,9 @@ namespace Be.Windows.Forms
 
 			public virtual PointF GetCaretPointF(long byteIndex)
 			{
+#if FULL_DEBUG
 				System.Diagnostics.Debug.WriteLine("GetCaretPointF()", "KeyInterpreter");
-
+#endif
 				return _hexBox.GetBytePointF(byteIndex);
 			}
 
@@ -1083,8 +1088,9 @@ namespace Be.Windows.Forms
 			#region Misc
 			public override PointF GetCaretPointF(long byteIndex)
 			{
+#if FULL_DEBUG
 				System.Diagnostics.Debug.WriteLine("GetCaretPointF()", "StringKeyInterpreter");
-
+#endif
 				Point gp = _hexBox.GetGridBytePoint(byteIndex);
 				return _hexBox.GetByteStringPointF(gp);
 			}
@@ -1458,8 +1464,9 @@ namespace Be.Windows.Forms
 
 		void UpdateScrollSize()
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("UpdateScrollSize()", "HexBox");
-
+#endif
 			// calc scroll bar info
 			if (VScrollBarVisible && _byteProvider != null && _byteProvider.Length > 0 && _iHexMaxHBytes != 0)
 			{
@@ -1496,8 +1503,9 @@ namespace Be.Windows.Forms
 
 		void UpdateVScroll()
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("UpdateVScroll()", "HexBox");
-
+#endif
 			int max = ToScrollMax(_scrollVmax);
 
 			if (max > 0)
@@ -1623,8 +1631,9 @@ namespace Be.Windows.Forms
 		/// </summary>
 		public void ScrollByteIntoView()
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("ScrollByteIntoView()", "HexBox");
-
+#endif
 			ScrollByteIntoView(_bytePos);
 		}
 
@@ -1634,8 +1643,9 @@ namespace Be.Windows.Forms
 		/// <param name="index">the index of the byte</param>
 		public void ScrollByteIntoView(long index)
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("ScrollByteIntoView(long index)", "HexBox");
-
+#endif
 			if (_byteProvider == null || _keyInterpreter == null)
 				return;
 
@@ -1656,8 +1666,9 @@ namespace Be.Windows.Forms
 		#region Selection methods
 		void ReleaseSelection()
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("ReleaseSelection()", "HexBox");
-
+#endif
 			if (_selectionLength == 0)
 				return;
 			_selectionLength = 0;
@@ -1782,8 +1793,9 @@ namespace Be.Windows.Forms
 			if (_byteProvider == null || _keyInterpreter == null || _caretVisible || !this.Focused)
 				return;
 
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("CreateCaret()", "HexBox");
-
+#endif
 			// define the caret width depending on InsertActive mode
 			int caretWidth = (this.InsertActive) ? 1 : (int)_charSize.Width;
 			int caretHeight = (int)_charSize.Height;
@@ -1801,8 +1813,9 @@ namespace Be.Windows.Forms
 			if (_byteProvider == null || _keyInterpreter == null)
 				return;
 
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("UpdateCaret()", "HexBox");
-
+#endif
 			long byteIndex = _bytePos - _startByte;
 			PointF p = _keyInterpreter.GetCaretPointF(byteIndex);
 			p.X += _byteCharacterPos * _charSize.Width;
@@ -1814,16 +1827,18 @@ namespace Be.Windows.Forms
 			if (!_caretVisible)
 				return;
 
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("DestroyCaret()", "HexBox");
-
+#endif
 			NativeMethods.DestroyCaret();
 			_caretVisible = false;
 		}
 
 		void SetCaretPosition(Point p)
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("SetCaretPosition()", "HexBox");
-
+#endif
 			if (_byteProvider == null || _keyInterpreter == null)
 				return;
 
@@ -1858,8 +1873,9 @@ namespace Be.Windows.Forms
 
 		BytePositionInfo GetHexBytePositionInfo(Point p)
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("GetHexBytePositionInfo()", "HexBox");
-
+#endif
 			long bytePos;
 			int byteCharaterPos;
 
@@ -1886,8 +1902,9 @@ namespace Be.Windows.Forms
 
 		BytePositionInfo GetStringBytePositionInfo(Point p)
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("GetStringBytePositionInfo()", "HexBox");
-
+#endif
 			long bytePos;
 			int byteCharacterPos;
 
@@ -2344,8 +2361,9 @@ namespace Be.Windows.Forms
 			if (_byteProvider == null)
 				return;
 
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("OnPaint " + DateTime.Now.ToString(), "HexBox");
-
+#endif
 			// draw only in the content rectangle, so exclude the border and the scrollbar.
 			Region r = new Region(ClientRectangle);
 			r.Exclude(_recContent);
@@ -3854,8 +3872,9 @@ namespace Be.Windows.Forms
 		/// <param name="e">An EventArgs that contains the event data.</param>
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("OnMouseDown()", "HexBox");
-
+#endif
 			if (!Focused)
 				Focus();
 
@@ -3894,8 +3913,9 @@ namespace Be.Windows.Forms
 		/// <param name="e">An EventArgs that contains the event data.</param>
 		protected override void OnGotFocus(EventArgs e)
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("OnGotFocus()", "HexBox");
-
+#endif
 			base.OnGotFocus(e);
 
 			CreateCaret();
@@ -3907,8 +3927,9 @@ namespace Be.Windows.Forms
 		/// <param name="e">An EventArgs that contains the event data.</param>
 		protected override void OnLostFocus(EventArgs e)
 		{
+#if FULL_DEBUG
 			System.Diagnostics.Debug.WriteLine("OnLostFocus()", "HexBox");
-
+#endif
 			base.OnLostFocus(e);
 
 			DestroyCaret();
