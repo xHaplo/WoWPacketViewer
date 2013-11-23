@@ -161,7 +161,7 @@ namespace WoWPacketViewer
             // Select the bytes in the hex box that the selected read data corresponds to
             else
             {
-                hexBox.Select((int)item.ByteOffset, item.ByteLength);
+                hexBox.Select((int)item.ByteOffset, item.ByteLength == 0 ? 1 : item.ByteLength);
             }
         }
 
