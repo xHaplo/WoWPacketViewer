@@ -94,6 +94,12 @@ namespace WoWPacketViewer.Misc
                 bytes[value] = ReadBit(name, value);
         }
 
+        public void ReadBit2DArray(ref byte[] byteArray, string name, int arrayIndex, params int[] byteArrayPositions)
+        {
+            var arrayName = string.Format("{0}[{1}]", name, arrayIndex);
+            ReadBitArray(ref byteArray, arrayName, byteArrayPositions);
+        }
+
         public Bit ReadBit()
         {
             ++_bitpos;

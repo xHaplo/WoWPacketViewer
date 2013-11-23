@@ -122,7 +122,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
             }
 
             if (packet.BitsRemaining() > 0)
-                packet.ReadBits(packet.BitsRemaining());
+                packet.ReadBits(packet.BitsRemaining(), "Remaining bits in flushed byte.");
 
             if (hasAccountData)
             {
