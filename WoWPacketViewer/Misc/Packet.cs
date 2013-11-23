@@ -24,6 +24,7 @@ namespace WoWPacketViewer.Misc
         {
             BaseStream.Position = 0;
             ReadList.Clear();
+            ResetBitReader();
         }
 
         public Opcode Opcode
