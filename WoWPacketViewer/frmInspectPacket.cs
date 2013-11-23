@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CustomExtensions;
 using WoWPacketViewer.Misc;
+using BrightIdeasSoftware;
 using Be.Windows.Forms;
 
 namespace WoWPacketViewer
@@ -17,6 +18,7 @@ namespace WoWPacketViewer
         private frmMain _mainForm;
         private string _baseTitle;
         private bool _resizing = false;
+        private Packet _packet;
 
         public frmInspectPacket(frmMain mainForm)
         {
@@ -68,14 +70,16 @@ namespace WoWPacketViewer
             }
 
             var ms = packet.BaseStream as System.IO.MemoryStream;
-
             hexBox.ByteProvider = new DynamicByteProvider(ms.GetBuffer());
+
+            _packet = packet;
         }
 
         public void ResetForm()
         {
             Text = _baseTitle;
             lvwPacketData.ClearObjects();
+            _packet = null;
         }
 
         private void frmInspectPacket_FormClosing(object sender, FormClosingEventArgs e)
@@ -136,6 +140,60 @@ namespace WoWPacketViewer
                 lvwPacketData.AutoResizeColumn(i, ColumnHeaderAutoResizeStyle.ColumnContent);
 
             lvwPacketData.Columns[lvwPacketData.Columns.Count - 1].Width = -2;
+        }
+
+        private void lvwPacketData_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_packet == null
+                || lvwPacketData.SelectedObject == null
+                || !lvwPacketData.Focused)
+                return;
+
+            // Select the bytes in the hex box that the selected read data corresponds to
+            var item = (PacketReadItem)lvwPacketData.SelectedObject;
+            hexBox.Select((int)item.ByteOffset, item.ByteLength);
+        }
+
+        private void hexBox_SelectionLengthChanged(object sender, EventArgs e)
+        {
+            SelectListEntryForSelectedHexBytes();
+        }
+
+        private void hexBox_SelectionStartChanged(object sender, EventArgs e)
+        {
+            SelectListEntryForSelectedHexBytes();
+        }
+
+        private void SelectListEntryForSelectedHexBytes()
+        {
+            if (_packet == null)
+                return;
+
+            var startPos = hexBox.SelectionStart;
+            var endPos = hexBox.SelectionLength;
+
+            var item = LookupReadItemAtBytePosition(startPos, endPos);
+            if (item == null)
+                return;
+
+            var listItem = lvwPacketData.ModelToItem(item);
+
+            // TODO: Highlight list item.
+        }
+
+        private PacketReadItem LookupReadItemAtBytePosition(long bytePosition, long selectedLength)
+        {
+            var curBitPos = 0;
+            foreach (PacketReadItem item in lvwPacketData.Objects)
+            {
+                var curBytePos = (curBitPos / 8);
+                if (curBytePos >= bytePosition)
+                    return item;
+
+                curBitPos += item.BitLength;
+            }
+
+            return null;
         }
     }
 }

@@ -63,6 +63,7 @@
             this.lvwPacketData.FullRowSelect = true;
             this.lvwPacketData.GridLines = true;
             this.lvwPacketData.Location = new System.Drawing.Point(3, 3);
+            this.lvwPacketData.MultiSelect = false;
             this.lvwPacketData.Name = "lvwPacketData";
             this.lvwPacketData.OwnerDraw = true;
             this.lvwPacketData.ShowGroups = false;
@@ -71,6 +72,7 @@
             this.lvwPacketData.UseCompatibleStateImageBehavior = false;
             this.lvwPacketData.View = System.Windows.Forms.View.Details;
             this.lvwPacketData.VirtualMode = true;
+            this.lvwPacketData.SelectedIndexChanged += new System.EventHandler(this.lvwPacketData_SelectedIndexChanged);
             // 
             // olvColumnBitOffset
             // 
@@ -128,6 +130,8 @@
             this.hexBox.StringViewVisible = true;
             this.hexBox.TabIndex = 4;
             this.hexBox.VScrollBarVisible = true;
+            this.hexBox.SelectionStartChanged += new System.EventHandler(this.hexBox_SelectionStartChanged);
+            this.hexBox.SelectionLengthChanged += new System.EventHandler(this.hexBox_SelectionLengthChanged);
             // 
             // frmInspectPacket
             // 
