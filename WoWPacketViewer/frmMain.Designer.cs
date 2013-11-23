@@ -122,6 +122,7 @@
             this.lvwPacketList.View = System.Windows.Forms.View.Details;
             this.lvwPacketList.VirtualMode = true;
             this.lvwPacketList.DoubleClick += new System.EventHandler(this.lvwPacketList_DoubleClick);
+            this.lvwPacketList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lvwPacketList_KeyPress);
             // 
             // olvColumnNo
             // 

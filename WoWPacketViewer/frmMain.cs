@@ -220,5 +220,15 @@ namespace WoWPacketViewer
                 _inspectPacketForm.WindowState = FormWindowState.Normal;
             _inspectPacketForm.Activate();
         }
+
+        private void lvwPacketList_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Load packet inspection form when enter is pressed on an item.
+            if (e.KeyChar == 13)
+            {
+                LoadInfoForSelectedPacket();
+                e.Handled = true;
+            }
+        }
     }
 }
