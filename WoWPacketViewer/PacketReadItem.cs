@@ -55,6 +55,14 @@ namespace WoWPacketViewer
             set;
         }
 
+        public string Size
+        {
+            get
+            {
+                return string.Format("{0}B ({1} bits)", ByteLength, BitLength);
+            }
+        }
+
         public string Bits
         {
             get;

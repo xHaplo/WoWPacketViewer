@@ -34,8 +34,7 @@
             this.olvColumnName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnValue = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnType = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnBitLength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumnByteLength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnSize = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnBits = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.hexBox = new Be.Windows.Forms.HexBox();
             ((System.ComponentModel.ISupportInitialize)(this.lvwPacketData)).BeginInit();
@@ -48,8 +47,7 @@
             this.lvwPacketData.AllColumns.Add(this.olvColumnName);
             this.lvwPacketData.AllColumns.Add(this.olvColumnValue);
             this.lvwPacketData.AllColumns.Add(this.olvColumnType);
-            this.lvwPacketData.AllColumns.Add(this.olvColumnBitLength);
-            this.lvwPacketData.AllColumns.Add(this.olvColumnByteLength);
+            this.lvwPacketData.AllColumns.Add(this.olvColumnSize);
             this.lvwPacketData.AllColumns.Add(this.olvColumnBits);
             this.lvwPacketData.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lvwPacketData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -58,8 +56,7 @@
             this.olvColumnName,
             this.olvColumnValue,
             this.olvColumnType,
-            this.olvColumnBitLength,
-            this.olvColumnByteLength,
+            this.olvColumnSize,
             this.olvColumnBits});
             this.lvwPacketData.EmptyListMsg = "No reads.\n\nEither an acknowledgement/request packet, or the handler has yet to be" +
     " implemented.";
@@ -105,23 +102,17 @@
             this.olvColumnType.CellPadding = null;
             this.olvColumnType.Text = "Type";
             // 
-            // olvColumnBitLength
+            // olvColumnSize
             // 
-            this.olvColumnBitLength.AspectName = "BitLength";
-            this.olvColumnBitLength.CellPadding = null;
-            this.olvColumnBitLength.Text = "Bit length";
-            // 
-            // olvColumnByteLength
-            // 
-            this.olvColumnByteLength.AspectName = "ByteLength";
-            this.olvColumnByteLength.CellPadding = null;
-            this.olvColumnByteLength.Text = "Byte length";
+            this.olvColumnSize.AspectName = "Size";
+            this.olvColumnSize.CellPadding = null;
+            this.olvColumnSize.Text = "Size";
             // 
             // olvColumnBits
             // 
             this.olvColumnBits.AspectName = "Bits";
             this.olvColumnBits.CellPadding = null;
-            this.olvColumnBits.Text = "Bit representation";
+            this.olvColumnBits.Text = "Binary";
             // 
             // hexBox
             // 
@@ -164,8 +155,7 @@
         private BrightIdeasSoftware.OLVColumn olvColumnName;
         private BrightIdeasSoftware.OLVColumn olvColumnValue;
         private BrightIdeasSoftware.OLVColumn olvColumnType;
-        private BrightIdeasSoftware.OLVColumn olvColumnBitLength;
-        private BrightIdeasSoftware.OLVColumn olvColumnByteLength;
+        private BrightIdeasSoftware.OLVColumn olvColumnSize;
         private BrightIdeasSoftware.OLVColumn olvColumnBits;
         private Be.Windows.Forms.HexBox hexBox;
 
