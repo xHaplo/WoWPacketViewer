@@ -34,11 +34,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
             }
 
             for (int i = 0; i < queryCount; i++)
-            {
-                var bits = new BitArray(guid[i]);
-                fullGuid[i] = BitConverter.ToUInt64(guid[i], 0);
-                packet.AddIgnoredRead("Guid[{0}]", fullGuid[i].ToString(), typeof(ulong), sizeof(ulong), bits, false, i);
-            }
+                packet.ReadUInt64(guid[i], "Guid[{0}]", i);
 
             // TODO: Handle rest of packet (for various DB types)
         }

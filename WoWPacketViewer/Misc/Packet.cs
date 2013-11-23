@@ -100,7 +100,7 @@ namespace WoWPacketViewer.Misc
         public void ReadBitArray(ref byte[] bytes, string name, params int[] values)
         {
             foreach (var value in values)
-                bytes[value] = ReadBit(name, value);
+                bytes[value] = ReadBit("{0}[{1}]", name, value);
         }
 
         public void ReadBit2DArray(ref byte[] byteArray, string name, int arrayIndex, params int[] byteArrayPositions)
@@ -463,6 +463,13 @@ namespace WoWPacketViewer.Misc
 
             AddRead(name, data, typeof(T), size, bits, false, args);
             return result;
+        }
+
+        public void ReadUInt64(byte[] bytes, string name, params object[] args)
+        {
+            var guid = BitConverter.ToUInt64(bytes, 0);
+            var bits = new BitArray(bytes);
+            AddIgnoredRead(name, guid.ToString(), typeof(ulong), sizeof(ulong), bits, true, args);
         }
     }
 }

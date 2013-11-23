@@ -57,7 +57,6 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
 
         private static void HandleMovementUpdate(uint blockId, Packet packet)
         {
-            ulong guid;
             long compressedQuaternion;
             byte[] objectGuid = new byte[8];
             bool[] unk = new bool[23];
@@ -68,7 +67,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
             float flySpeed, runSpeed, walkSpeed, swimBackSpeed, flyBackSpeed, turnSpeed, pitchSpeed, 
                 swimSpeed, runBackSpeed;
 
-            unk[0] = packet.ReadBit("(MovementUpdate) {0}. Unk bit 0", blockId);
+            unk[0] = packet.ReadBit("{0}. Unk bit 0", blockId);
             unk[1] = packet.ReadBit("{0}. Unk bit 1", blockId);
             unk[2] = packet.ReadBit("{0}. Unk bit 2", blockId);
             unk[3] = packet.ReadBit("{0}. Unk bit 3", blockId);
@@ -98,26 +97,25 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
 
             if (isAlive)
             {
-                objectGuid[4] = packet.ReadBit("{0}. guidMask[4]", blockId);
-                objectGuid[1] = packet.ReadBit("{0}. guidMask[1]", blockId);
+                packet.ReadBitArray(ref objectGuid, blockId + ". guidMask", 4, 1);
                 unkNumber = packet.ReadBits(19, "{0}. unkNumber", blockId);
-                objectGuid[5] = packet.ReadBit("{0}. guidMask[5]", blockId);
+                packet.ReadBitArray(ref objectGuid, blockId + ". guidMask", 5);
                 noRotation = packet.ReadBit("{0}. noRotation", blockId);
-                objectGuid[7] = packet.ReadBit("{0}. guidMask[7]", blockId);
+                packet.ReadBitArray(ref objectGuid, blockId + ". guidMask", 7);
                 unkNumber2 = packet.ReadBits(22, "{0}. unkNumber2", blockId);
                 unk[12] = packet.ReadBit("{0}. Unk bit 12", blockId);
                 unk[13] = packet.ReadBit("{0}. Unk bit 13", blockId);
                 unk[14] = packet.ReadBit("{0}. Unk bit 14", blockId);
-                objectGuid[3] = packet.ReadBit("{0}. guidMask[3]", blockId);
+                packet.ReadBitArray(ref objectGuid, blockId + ". guidMask", 3);
                 unk[15] = packet.ReadBit("{0}. Unk bit 15", blockId);
                 unk[16] = packet.ReadBit("{0}. Unk bit 16", blockId);
                 unk[17] = packet.ReadBit("{0}. Unk bit 17", blockId);
                 unk[18] = packet.ReadBit("{0}. Unk bit 18", blockId);
-                objectGuid[2] = packet.ReadBit("{0}. guidMask[2]", blockId);
+                packet.ReadBitArray(ref objectGuid, blockId + ". guidMask", 2);
                 unk[19] = packet.ReadBit("{0}. Unk bit 19", blockId);
-                objectGuid[0] = packet.ReadBit("{0}. guidMask[0]", blockId);
+                packet.ReadBitArray(ref objectGuid, blockId + ". guidMask", 0);
                 isTransport = packet.ReadBit("{0}. isTransport", blockId);
-                objectGuid[6] = packet.ReadBit("{0}. guidMask[6]", blockId);
+                packet.ReadBitArray(ref objectGuid, blockId + ". guidMask", 6);
                 unk[20] = packet.ReadBit("{0}. Unk bit 20", blockId);
                 unk[21] = packet.ReadBit("{0}. Unk bit 21", blockId);
                 unk[22] = packet.ReadBit("{0}. Unk bit 22", blockId);
@@ -151,10 +149,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
                 positionZ = packet.ReadSingle("{0}. PositionZ", blockId);
                 packet.ReadXORByte(ref objectGuid, 0, "{0}. guid[0]", blockId);
 
-                guid = System.BitConverter.ToUInt64(objectGuid, 0);
-
-                var bits = new BitArray(objectGuid);
-                packet.AddIgnoredRead("{0}. Guid (constructed)", guid.ToString(), typeof(ulong), sizeof(ulong), bits, false, blockId);
+                packet.ReadUInt64(objectGuid, "{0}. Guid (unpacked)", blockId);
             }
 
             if (hasStationaryPosition)
@@ -177,7 +172,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
 
         private static void HandleValuesUpdate(uint blockId, UpdateType updateType, ObjectType objectType, Packet packet)
         {
-            var maskSizeBlocks = packet.ReadByte("(ValuesUpdate) {0}. MaskSize", blockId);
+            var maskSizeBlocks = packet.ReadByte("{0}. MaskSize", blockId);
             var maskSizeBytes = maskSizeBlocks * 4;
             var maskSizeBits = maskSizeBytes * 8;
             var bits = new BitArray(maskSizeBits);

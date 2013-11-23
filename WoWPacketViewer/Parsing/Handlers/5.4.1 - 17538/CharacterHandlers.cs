@@ -160,14 +160,8 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
 
                 packet.ReadXORBytes(ref c.GuildGuid, charPrefix + "GuildGuid", 4);
 
-                ulong charGuid = BitConverter.ToUInt64(c.Guid, 0),
-                    guildGuid = BitConverter.ToUInt64(c.GuildGuid, 0);
-
-                BitArray charGuidBits = new BitArray(c.Guid),
-                    guildGuidBits = new BitArray(c.GuildGuid);
-
-                packet.AddIgnoredRead(charPrefix + "Guid (unpacked)", charGuid.ToString(), typeof(ulong), sizeof(ulong), charGuidBits, false);
-                packet.AddIgnoredRead(charPrefix + "GuildGuid (unpacked)", guildGuid.ToString(), typeof(ulong), sizeof(ulong), guildGuidBits, false);
+                packet.ReadUInt64(c.Guid, charPrefix + "Guid (unpacked)");
+                packet.ReadUInt64(c.GuildGuid, charPrefix + "Guild guid (unpacked)");
             }
         }
 
