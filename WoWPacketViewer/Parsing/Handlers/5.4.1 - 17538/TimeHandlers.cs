@@ -10,8 +10,21 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
         [Parser(Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x144C, Direction.ClientToServer)]
         public static void HandleReadyForAccountDataTimes(Packet packet)
         {
-            System.Diagnostics.Debug.Print("{0}", packet.Length);
             // packet has no data.
+        }
+
+        [Parser(Opcode.CMSG_UI_TIME_REQUEST, 0x04EC, Direction.ClientToServer)]
+        public static void HandleUITimeRequest(Packet packet)
+        {
+            // packet has no data.
+        }
+
+        [Parser(Opcode.SMSG_UI_TIME, 0x05AC)]
+        public static void HandleUITimeResponse(Packet packet)
+        {
+            uint unixTime = packet.ReadUInt32("Unix time");
+            var dt = Utils.GetDateTimeFromUnixTime(unixTime);
+            packet.SetLastDataField(dt.ToString());
         }
 
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x1486)]
