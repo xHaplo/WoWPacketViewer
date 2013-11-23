@@ -413,9 +413,12 @@ namespace WoWPacketViewer.Misc
             return (T)Enum.ToObject(typeof(T), rawValue);
         }
 
-        public T ReadEnum<T>(TypeCode code, string name, params object[] args)
+        public T ReadEnum<T>(TypeCode code, string name, params object[] args) where T : struct, IConvertible
         {
-            long rawValue = ReadValue(code);
+            if (!typeof(T).IsEnum)
+                throw new ArgumentException("Must be enumeration.");
+
+            var rawValue = ReadValue(code);
             var result = (T)Enum.ToObject(typeof(T), rawValue);
             var size = 0;
 
@@ -443,7 +446,8 @@ namespace WoWPacketViewer.Misc
             }
 
             var bits = new BitArray(BitConverter.GetBytes(rawValue).SubArray(0, size));
-            AddRead(name, result.GetFullName(), typeof(T), size, bits, false, args);
+            var flags = (string)typeof(EnumExtensions).GetMethod("GetIndividualFlagString").Invoke(null, new object[] { result });
+            AddRead(name, flags, typeof(T), size, bits, false, args);
             return result;
         }
     }

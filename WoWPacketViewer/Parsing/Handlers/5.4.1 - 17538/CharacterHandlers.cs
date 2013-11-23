@@ -34,13 +34,13 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
             public float Z;
             public byte Face;
             public uint ZoneId;
-            public uint CharacterFlags;
+            public CharLoginFlags CharacterFlags;
             public uint MapId;
             public byte Race;
             public byte Gender;
             public byte HairColour;
             public byte Class;
-            public uint CustomizeFlags;
+            public CharCustomizeFlags CustomizeFlags;
             public byte FacialHair;
             public byte HairStyle;
             public uint PetFamily;
@@ -122,7 +122,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
 
                 packet.ReadXORBytes(ref c.GuildGuid, charPrefix + "GuildGuid", 7);
 
-                c.CharacterFlags = packet.ReadUInt32(charPrefix + "CharacterFlags");
+                c.CharacterFlags = packet.ReadEnum<CharLoginFlags>(TypeCode.UInt32, charPrefix + "CharacterFlags");
                 c.MapId = packet.ReadUInt32(charPrefix + "MapId");
                 c.Race = packet.ReadByte(charPrefix + "Race");
                 c.Z = packet.ReadSingle(charPrefix + "Z");
@@ -142,7 +142,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
                 packet.ReadXORBytes(ref c.GuildGuid, charPrefix + "GuildGuid", 2);
                 packet.ReadXORBytes(ref c.Guid, charPrefix + "Guid", 1);
 
-                c.CustomizeFlags = packet.ReadUInt32(charPrefix + "CustomizeFlags");
+                c.CustomizeFlags = packet.ReadEnum<CharCustomizeFlags>(TypeCode.UInt32, charPrefix + "CustomizeFlags");
                 c.FacialHair = packet.ReadByte(charPrefix + "FacialHair");
 
                 packet.ReadXORBytes(ref c.GuildGuid, charPrefix + "GuildGuid", 6);

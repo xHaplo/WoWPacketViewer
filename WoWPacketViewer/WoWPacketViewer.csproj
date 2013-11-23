@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\AuthCodes.cs" />
+    <Compile Include="Enums\CharCustomizeFlags.cs" />
+    <Compile Include="Enums\CharLoginFlags.cs" />
     <Compile Include="Enums\DBType.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\HighGuidType.cs" />
