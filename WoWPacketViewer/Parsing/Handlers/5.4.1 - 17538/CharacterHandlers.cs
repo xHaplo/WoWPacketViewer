@@ -170,5 +170,16 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
                 packet.AddIgnoredRead(charPrefix + "GuildGuid (unpacked)", guildGuid.ToString(), typeof(ulong), sizeof(ulong), guildGuidBits, false);
             }
         }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, 0x01E1, Direction.ClientToServer)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            byte[] maskOrder = { 1, 0, 7, 2, 5, 6, 4, 3 };
+            byte[] byteOrder = { 7, 6, 0, 1, 4, 3, 2, 5 };
+
+            var unk0 = packet.ReadSingle("Unk0");
+            ulong guid;
+            packet.UnpackGuid(maskOrder, byteOrder, out guid, "Guid");
+        }
     }
 }

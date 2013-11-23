@@ -331,6 +331,48 @@ namespace WoWPacketViewer.Misc
                 ReadXORByte(ref bytes, value, name, value);
         }
 
+        public byte[] UnpackGuid(byte[] maskOrder, byte[] byteOrder, out ulong guid)
+        {
+            var valueMask = new bool[maskOrder.Length];
+            var valueBytes = new byte[byteOrder.Length];
+            var byteSize = 1;
+            byte maskByte = 0;
+
+            for (var i = 0; i < valueMask.Length; i++)
+            {
+                valueMask[i] = ReadBit();
+                if (valueMask[i])
+                {
+                    maskByte |= (byte)(1 << (7 - i));
+                    ++byteSize;
+                }
+            }
+
+            var bytes = new byte[byteSize];
+
+            bytes[0] = maskByte;
+            var n = 1;
+            for (var i = 0; i < valueBytes.Length; i++)
+            {
+                if (valueMask[maskOrder[i]])
+                {
+                    bytes[n] = ReadByte();
+                    valueBytes[byteOrder[i]] = (byte)(bytes[n++] ^ 1);
+                }
+            }
+
+            guid = BitConverter.ToUInt64(valueBytes, 0);
+            return bytes;
+        }
+
+        public byte[] UnpackGuid(byte[] maskOrder, byte[] byteOrder, out ulong guid, string name, params object[] args)
+        {
+            var bytes = UnpackGuid(maskOrder, byteOrder, out guid);
+            var bits = new BitArray(bytes); // we want bits of the original packed data, not the unpacked data
+            AddRead(name, guid.ToString(), typeof(ulong), bytes.Length, bits, false, args);
+            return bytes;
+        }
+
         private long ReadValue(TypeCode code)
         {
             long rawValue = 0;
