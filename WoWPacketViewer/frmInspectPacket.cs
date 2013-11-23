@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using CustomExtensions;
 using WoWPacketViewer.Misc;
+using Be.Windows.Forms;
 
 namespace WoWPacketViewer
 {
@@ -23,6 +24,8 @@ namespace WoWPacketViewer
 
             _mainForm = mainForm;
             _baseTitle = Text;
+
+            ResizeControls();
         }
 
         public void LoadPacketData(Packet packet)
@@ -63,6 +66,10 @@ namespace WoWPacketViewer
 
                 lvwPacketData.AddObject(item);
             }
+
+            var ms = packet.BaseStream as System.IO.MemoryStream;
+
+            hexBox.ByteProvider = new DynamicByteProvider(ms.GetBuffer());
         }
 
         public void ResetForm()
@@ -78,6 +85,14 @@ namespace WoWPacketViewer
             {
                 Hide();
                 e.Cancel = true;
+
+                if (_mainForm.WindowState == FormWindowState.Minimized)
+                    _mainForm.WindowState = FormWindowState.Normal;
+
+                _mainForm.Activate();
+
+                // Ensure the window is correctly redrawn, if this window was in front of it.
+                _mainForm.Invalidate(true);
             }
         }
 
@@ -85,6 +100,23 @@ namespace WoWPacketViewer
         {
             if (!_resizing)
                 ResizeColumnHeaders();
+
+            ResizeControls();
+        }
+
+        private void ResizeControls()
+        {
+            // Resize form
+            lvwPacketData.Height = (int)(Height * 0.6);
+            lvwPacketData.Top = 0;
+            lvwPacketData.Width = Width - SystemInformation.HorizontalScrollBarThumbWidth;
+            lvwPacketData.Left = 0;
+
+            hexBox.Height = Height - lvwPacketData.Height - SystemInformation.Border3DSize.Height 
+                - SystemInformation.VerticalScrollBarThumbHeight - SystemInformation.VerticalScrollBarArrowHeight;
+            hexBox.Top = lvwPacketData.Bottom + 1;
+            hexBox.Width = Width - SystemInformation.HorizontalScrollBarThumbWidth;
+            hexBox.Left = 0;
         }
 
         private void frmInspectPacket_ResizeBegin(object sender, EventArgs e)

@@ -37,6 +37,7 @@
             this.olvColumnBitLength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnByteLength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnBits = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.hexBox = new Be.Windows.Forms.HexBox();
             ((System.ComponentModel.ISupportInitialize)(this.lvwPacketData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,6 +51,7 @@
             this.lvwPacketData.AllColumns.Add(this.olvColumnBitLength);
             this.lvwPacketData.AllColumns.Add(this.olvColumnByteLength);
             this.lvwPacketData.AllColumns.Add(this.olvColumnBits);
+            this.lvwPacketData.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lvwPacketData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumnBitOffset,
             this.olvColumnByteOffset,
@@ -59,15 +61,14 @@
             this.olvColumnBitLength,
             this.olvColumnByteLength,
             this.olvColumnBits});
-            this.lvwPacketData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvwPacketData.EmptyListMsg = "No reads.\n\nEither an acknowledgement/request packet, or the handler has yet to be" +
     " implemented.";
-            this.lvwPacketData.Location = new System.Drawing.Point(0, 0);
+            this.lvwPacketData.Location = new System.Drawing.Point(3, 3);
             this.lvwPacketData.Name = "lvwPacketData";
             this.lvwPacketData.OwnerDraw = true;
             this.lvwPacketData.ShowGroups = false;
-            this.lvwPacketData.Size = new System.Drawing.Size(441, 357);
-            this.lvwPacketData.TabIndex = 0;
+            this.lvwPacketData.Size = new System.Drawing.Size(441, 218);
+            this.lvwPacketData.TabIndex = 2;
             this.lvwPacketData.UseCompatibleStateImageBehavior = false;
             this.lvwPacketData.View = System.Windows.Forms.View.Details;
             this.lvwPacketData.VirtualMode = true;
@@ -120,12 +121,28 @@
             this.olvColumnBits.CellPadding = null;
             this.olvColumnBits.Text = "Bit representation";
             // 
+            // hexBox
+            // 
+            this.hexBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.hexBox.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hexBox.InfoForeColor = System.Drawing.Color.Empty;
+            this.hexBox.LineInfoVisible = true;
+            this.hexBox.Location = new System.Drawing.Point(3, 227);
+            this.hexBox.Name = "hexBox";
+            this.hexBox.ReadOnly = true;
+            this.hexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+            this.hexBox.Size = new System.Drawing.Size(441, 133);
+            this.hexBox.StringViewVisible = true;
+            this.hexBox.TabIndex = 4;
+            this.hexBox.VScrollBarVisible = true;
+            // 
             // frmInspectPacket
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 357);
             this.Controls.Add(this.lvwPacketData);
+            this.Controls.Add(this.hexBox);
             this.Name = "frmInspectPacket";
             this.Text = "Inspect packet";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmInspectPacket_FormClosing);
@@ -148,6 +165,8 @@
         private BrightIdeasSoftware.OLVColumn olvColumnBitLength;
         private BrightIdeasSoftware.OLVColumn olvColumnByteLength;
         private BrightIdeasSoftware.OLVColumn olvColumnBits;
+        private Be.Windows.Forms.HexBox hexBox;
+
 
     }
 }

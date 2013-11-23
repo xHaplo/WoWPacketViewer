@@ -196,7 +196,8 @@ namespace WoWPacketViewer
 
             // Show the form, or re-activate it if it's minimised.
             _inspectPacketForm.Show();
-            _inspectPacketForm.WindowState = FormWindowState.Normal;
+            if (_inspectPacketForm.WindowState == FormWindowState.Minimized)
+                _inspectPacketForm.WindowState = FormWindowState.Normal;
             _inspectPacketForm.Activate();
         }
     }

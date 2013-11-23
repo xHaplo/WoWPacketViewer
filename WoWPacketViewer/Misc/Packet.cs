@@ -12,7 +12,7 @@ namespace WoWPacketViewer.Misc
     public sealed partial class Packet : BinaryReader
     {
         public Packet(uint opcodeValue, byte[] buffer, Direction direction)
-            : base(new MemoryStream(buffer))
+            : base(new MemoryStream(buffer, 0, buffer.Length, false, true))
         {
             OpcodeValue = opcodeValue;
             Direction = direction;
