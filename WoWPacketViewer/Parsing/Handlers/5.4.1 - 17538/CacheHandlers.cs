@@ -14,7 +14,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
             DBType dbType;
             uint queryCount;
 
-            dbType = packet.ReadEnum<DBType>(TypeCode.UInt32, EnumType.FullName, "DBType");
+            dbType = packet.ReadEnum<DBType, UInt32>(EnumType.FullName, "DBType");
             queryCount = packet.ReadBits(21, "QueryCount");
 
             var fullGuid = new ulong[queryCount];
@@ -47,7 +47,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
         public static void HandleDBReply(Packet packet)
         {
             var unixTime = packet.ReadDateTime("UnixTime (last change)");
-            var dbType = packet.ReadEnum<DBType>(TypeCode.UInt32, EnumType.FullName, "DBType");
+            var dbType = packet.ReadEnum<DBType, UInt32>(EnumType.FullName, "DBType");
 
             // TODO: Handle rest of packet (for various DB types)
         }

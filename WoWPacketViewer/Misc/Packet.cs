@@ -430,38 +430,16 @@ namespace WoWPacketViewer.Misc
             return (T)Enum.ToObject(typeof(T), rawValue);
         }
 
-        public T ReadEnum<T>(TypeCode code, EnumType enumType, string name, params object[] args) where T : struct, IConvertible
+        public T ReadEnum<T, T2>(EnumType enumType, string name, params object[] args) 
+            where T  : struct, IConvertible
+            where T2 : struct
         {
             if (!typeof(T).IsEnum)
                 throw new ArgumentException("Must be enumeration.");
 
-            var rawValue = ReadValue(code);
+            var rawValue = ReadValue(Type.GetTypeCode(typeof(T2)));
             var result = (T)Enum.ToObject(typeof(T), rawValue);
-            var size = 0;
-
-            switch (code)
-            {
-                case TypeCode.Byte:
-                case TypeCode.SByte:
-                case TypeCode.Char:
-                    size = 1;
-                    break;
-
-                case TypeCode.UInt16:
-                case TypeCode.Int16:
-                    size = 2;
-                    break;
-
-                case TypeCode.UInt64:
-                case TypeCode.Int64:
-                    size = 8;
-                    break;
-
-                default:
-                    size = 4;
-                    break;
-            }
-
+            var size = Marshal.SizeOf(typeof(T2));
             var bits = new BitArray(BitConverter.GetBytes(rawValue).SubArray(0, size));
             var data = "";
             switch (enumType)
