@@ -9,6 +9,14 @@ using WoWPacketViewer.Enums;
 
 namespace WoWPacketViewer.Misc
 {
+    public enum EnumType
+    {
+        Name,
+        FullName,
+        Flags,
+        IndividualFlags
+    }
+
     public sealed partial class Packet : BinaryReader
     {
         public Packet(uint opcodeValue, byte[] buffer, Direction direction)
@@ -203,6 +211,15 @@ namespace WoWPacketViewer.Misc
             var result = base.ReadUInt32();
             var bits = new BitArray(BitConverter.GetBytes(result));
             AddRead(name, result.ToString(), typeof(uint), sizeof(uint), bits, false, args);
+            return result;
+        }
+
+        public DateTime ReadDateTime(string name, params object[] args)
+        {
+            var timestamp = base.ReadUInt32();
+            var result = Utils.GetDateTimeFromUnixTime(timestamp);
+            var bits = new BitArray(BitConverter.GetBytes(timestamp));
+            AddRead(name, string.Format("{0} ({1})", result.ToString(), timestamp), typeof(DateTime), sizeof(uint), bits, false, args);
             return result;
         }
 
@@ -413,7 +430,7 @@ namespace WoWPacketViewer.Misc
             return (T)Enum.ToObject(typeof(T), rawValue);
         }
 
-        public T ReadEnum<T>(TypeCode code, string name, params object[] args) where T : struct, IConvertible
+        public T ReadEnum<T>(TypeCode code, EnumType enumType, string name, params object[] args) where T : struct, IConvertible
         {
             if (!typeof(T).IsEnum)
                 throw new ArgumentException("Must be enumeration.");
@@ -446,8 +463,27 @@ namespace WoWPacketViewer.Misc
             }
 
             var bits = new BitArray(BitConverter.GetBytes(rawValue).SubArray(0, size));
-            var flags = (string)typeof(EnumExtensions).GetMethod("GetIndividualFlagString").Invoke(null, new object[] { result });
-            AddRead(name, flags, typeof(T), size, bits, false, args);
+            var data = "";
+            switch (enumType)
+            {
+                case EnumType.FullName:
+                    data = result.GetFullName();
+                    break;
+
+                case EnumType.Flags:
+                    data = (string)typeof(EnumExtensions).GetMethod("GetFlagString").Invoke(null, new object[] { result });
+                    break;
+
+                case EnumType.IndividualFlags:
+                    data = (string)typeof(EnumExtensions).GetMethod("GetIndividualFlagString").Invoke(null, new object[] { result });
+                    break;
+
+                default: // EnumType.Name
+                    data = result.ToString();
+                    break;
+            }
+
+            AddRead(name, data, typeof(T), size, bits, false, args);
             return result;
         }
     }

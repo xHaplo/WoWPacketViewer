@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using CustomExtensions;
@@ -89,9 +90,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
         [Parser(Opcode.SMSG_AUTH_RESPONSE, 0x0D05)]
         public static void HandleAuthResponse(Packet packet)
         {
-            var authCode = (AuthCodes) packet.ReadByte("authCode");
-            packet.SetLastDataField(authCode.GetFullName());
-
+            var authCode = packet.ReadEnum<AuthCodes>(TypeCode.Byte, EnumType.Name, "authCode");
             if (authCode != AuthCodes.AUTH_OK)
                 return;
 
