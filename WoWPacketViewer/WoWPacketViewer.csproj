@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\AuthCodes.cs" />
+    <Compile Include="Enums\DBType.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\ObjectType.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Parsing\Handlers\5.4.1 - 17538\UpdateHandlers.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Parsing\Handler.cs" />
+    <Compile Include="Parsing\Handlers\5.4.1 - 17538\CacheHandlers.cs" />
     <Compile Include="Parsing\ParserAttribute.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

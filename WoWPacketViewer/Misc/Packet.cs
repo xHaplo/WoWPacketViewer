@@ -88,6 +88,12 @@ namespace WoWPacketViewer.Misc
             return result;
         }
 
+        public void ReadBitArray(ref byte[] bytes, string name, params int[] values)
+        {
+            foreach (var value in values)
+                bytes[value] = ReadBit(name, value);
+        }
+
         public Bit ReadBit()
         {
             ++_bitpos;
@@ -288,7 +294,7 @@ namespace WoWPacketViewer.Misc
             return guid;
         }
 
-        public byte ReadXORByte(ref byte[] bytes, byte index)
+        public byte ReadXORByte(ref byte[] bytes, int index)
         {
             if (bytes[index] != 0)
                 bytes[index] ^= base.ReadByte();
@@ -296,7 +302,7 @@ namespace WoWPacketViewer.Misc
             return bytes[index];
         }
 
-        public byte ReadXORByte(ref byte[] bytes, byte index, string name, params object[] args)
+        public byte ReadXORByte(ref byte[] bytes, int index, string name, params object[] args)
         {
             if (bytes[index] == 0)
                 return 0;
@@ -307,10 +313,16 @@ namespace WoWPacketViewer.Misc
             return result;
         }
 
-        public void ReadXORBytes(ref byte[] bytes, params byte[] values)
+        public void ReadXORBytes(ref byte[] bytes, params int[] values)
         {
             foreach (var value in values)
                 ReadXORByte(ref bytes, value);
+        }
+
+        public void ReadXORBytes(ref byte[] bytes, string name, params int[] values)
+        {
+            foreach (var value in values)
+                ReadXORByte(ref bytes, value, name, value);
         }
 
         private long ReadValue(TypeCode code)
