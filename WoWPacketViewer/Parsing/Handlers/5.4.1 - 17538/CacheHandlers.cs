@@ -24,7 +24,7 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
                 guid[i] = new byte[8];
 
             for (int i = 0; i < queryCount; i++)
-                packet.ReadBitArray(ref guid[i], string.Format("guidMask[{0}]", i) + "[{0}]", 1, 7, 2, 5, 0, 6, 3, 4);
+                packet.ReadBit2DArray(ref guid[i], "guidMask", i, 1, 7, 2, 5, 0, 6, 3, 4);
 
             for (int i = 0; i < queryCount; i++)
             {
