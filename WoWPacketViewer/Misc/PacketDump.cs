@@ -13,6 +13,7 @@ namespace WoWPacketViewer.Misc
         {
             string line = "";
             int lineNo = 0;
+            Handler.LogType = PacketLogType.Unknown;
 
             try
             {
@@ -65,6 +66,8 @@ namespace WoWPacketViewer.Misc
 
                             if (line.StartsWith(arctiumOpcodeIndicator))
                             {
+                                Handler.LogType = PacketLogType.Arctium;
+
                                 // isn't necessarily 4 digits long, so go to the space.
                                 var startPos = arctiumOpcodeIndicator.Length;
                                 var endPos = line.IndexOf(' ', startPos);
@@ -79,6 +82,8 @@ namespace WoWPacketViewer.Misc
                             }
                             else if (line.StartsWith(ascentClientOpcodeIndicator))
                             {
+                                Handler.LogType = PacketLogType.Ascent;
+
                                 var s = line.Substring(ascentClientOpcodeIndicator.Length, 4);
                                 opcode = Convert.ToUInt32(s, 16);
                                 direction = Direction.ClientToServer;
@@ -88,6 +93,8 @@ namespace WoWPacketViewer.Misc
                             }
                             else if (line.StartsWith(ascentServerOpcodeIndicator))
                             {
+                                Handler.LogType = PacketLogType.Ascent;
+
                                 var s = line.Substring(ascentServerOpcodeIndicator.Length, 4);
                                 opcode = Convert.ToUInt32(s, 16);
                                 direction = Direction.ServerToClient;
@@ -97,6 +104,7 @@ namespace WoWPacketViewer.Misc
                             }
                             else if (line.StartsWith(arctiumClientToServerIndicator))
                             {
+                                Handler.LogType = PacketLogType.Arctium;
                                 direction = Direction.ClientToServer;
 #if PARSER_DEBUG
                                 Debug.Print("Found Arctium direction indicator: {0}", direction);
@@ -104,6 +112,7 @@ namespace WoWPacketViewer.Misc
                             }
                             else if (line.StartsWith(arctiumServerToClientIndicator))
                             {
+                                Handler.LogType = PacketLogType.Arctium;
                                 direction = Direction.ServerToClient;
 #if PARSER_DEBUG
                                 Debug.Print("Found Arctium direction indicator: {0}", direction);

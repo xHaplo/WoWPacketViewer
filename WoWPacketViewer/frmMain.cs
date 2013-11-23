@@ -127,6 +127,24 @@ namespace WoWPacketViewer
                 // Attach opcode
                 packet.Opcode = Handler.LookupOpcode(_clientBuild, packet.OpcodeValue, packet.Direction);
 
+                // Arctium includes 2 bytes of the header for these 2 packets (non-"world" packets).
+                // For these packets to be parsed correctly, we must chop this part of the header off first.
+                if (packet.Direction == Direction.ClientToServer
+                    && Handler.LogType == PacketLogType.Arctium)
+                {
+                    switch (packet.Opcode)
+                    {
+                        case Opcode.MSG_VERIFY_CONNECTIVITY:
+                        case Opcode.CMSG_AUTH_SESSION:
+                        {
+                            var ms = packet.BaseStream as MemoryStream;
+                            var newPacket = new Packet(packet.OpcodeValue, ms.GetBuffer().SubArray(2, packet.Length - 2), packet.Direction);
+                            newPacket.Opcode = packet.Opcode;
+                            packetList[i] = packet = newPacket;
+                        } break;
+                    }
+                }
+
                 item.Number = i + 1;
                 item.Direction = (packet.Direction == Direction.ServerToClient ? "S -> C" : "C -> S");
                 item.Opcode = string.Format("{0} (0x{1:X4})", packet.Opcode, packet.OpcodeValue);

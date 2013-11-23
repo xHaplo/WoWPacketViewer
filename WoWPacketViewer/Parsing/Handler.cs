@@ -19,6 +19,8 @@ namespace WoWPacketViewer
         private static OpcodeMap _serverOpcodeMap;
         private static OpcodeMap _clientOpcodeMap;
 
+        public static PacketLogType LogType;
+
         public static void LoadHandlers()
         {
             var types = Assembly.GetExecutingAssembly().GetTypes();

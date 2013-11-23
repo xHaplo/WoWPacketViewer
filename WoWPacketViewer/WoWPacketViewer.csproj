@@ -49,6 +49,7 @@
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\ObjectType.cs" />
     <Compile Include="Enums\Opcode.cs" />
+    <Compile Include="Enums\PacketLogType.cs" />
     <Compile Include="Enums\RealmSplitState.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
