@@ -91,8 +91,8 @@ namespace CustomExtensions
             {
                 var bits = Convert.ToUInt64(value);
                 if (bits == 0L)
-                    //yield return value;
-                    continue; // skip the zero value
+                    yield return value;
+                    //continue; // skip the zero value
 
                 while (flag < bits) flag <<= 1;
                 if (flag == bits)
