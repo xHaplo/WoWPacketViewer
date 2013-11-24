@@ -132,13 +132,12 @@ namespace WoWPacketViewer
                 return false;
             }
 
-            // Reset packet
-            packet.Reset();
-
-            // Load the handler.
             try
             {
-                handlerMap[key](packet);
+                // Only handle packets that have not been handled before.
+                // The read data will be cached.
+                if (packet.BaseStream.Position == 0)
+                    handlerMap[key](packet);
             }
             catch (Exception ex)
             {
