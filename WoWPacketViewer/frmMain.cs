@@ -20,6 +20,7 @@ namespace WoWPacketViewer
         private ToolStripMenuItem _checkedClientVersionMenu;
         private List<Packet> _packetList;
         private string _baseTitle;
+        private string _logPath;
         private bool _resizing = false;
 
         private frmInspectPacket _inspectPacketForm;
@@ -97,16 +98,18 @@ namespace WoWPacketViewer
             MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void LoadPacketDumpFromFile(string filename)
+        private void LoadPacketDumpFromFile(string logPath)
         {
             var packetList = new List<Packet>();
-            if (!PacketDump.Load(filename, ref packetList))
+            if (!PacketDump.Load(logPath, ref packetList))
             {
                 DisplayError("Failed to load packet dump. Please verify that the file exists, and is not currently in use.");
                 return;
             }
 
-            Text = string.Format("{0} - {1}", _baseTitle, filename);
+            _logPath = logPath;
+
+            Text = string.Format("{0} - {1}", _baseTitle, logPath);
             LoadPacketDump(packetList);
         }
 
@@ -212,7 +215,7 @@ namespace WoWPacketViewer
             Handler.HandlePacket(_clientBuild, packet);
 
             // Load packet data into the form.
-            _inspectPacketForm.LoadPacketData(packet);
+            _inspectPacketForm.LoadPacketData(packet, _logPath);
 
             // Show the form, or re-activate it if it's minimised.
             _inspectPacketForm.Show();

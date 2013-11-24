@@ -30,10 +30,11 @@ namespace WoWPacketViewer
             ResizeControls();
         }
 
-        public void LoadPacketData(Packet packet)
+        public void LoadPacketData(Packet packet, string logPath)
         {
-            Text = string.Format("{0} - {1} (0x{2:X4})", 
-                _baseTitle, packet.Opcode, packet.OpcodeValue);
+            var filename = System.IO.Path.GetFileName(logPath);
+            Text = string.Format("{0} - {1} (0x{2:X4}) - {3}", 
+                _baseTitle, packet.Opcode, packet.OpcodeValue, filename);
 
             int bitPos = 0;
             float bytePos = 0;
