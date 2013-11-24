@@ -112,7 +112,7 @@
             // 
             // olvColumnBits
             // 
-            this.olvColumnBits.AspectName = "Bits";
+            this.olvColumnBits.AspectName = "BitString";
             this.olvColumnBits.CellPadding = null;
             this.olvColumnBits.Text = "Binary";
             // 

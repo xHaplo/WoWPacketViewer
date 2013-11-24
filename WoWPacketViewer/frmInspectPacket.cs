@@ -36,39 +36,7 @@ namespace WoWPacketViewer
             Text = string.Format("{0} - {1} (0x{2:X4}) - {3}", 
                 _baseTitle, packet.Opcode, packet.OpcodeValue, filename);
 
-            int bitPos = 0;
-            float bytePos = 0;
-            foreach (var readInfo in packet.ReadList)
-            {
-                var item = new PacketReadItem();
-                var bits = "";
-                
-                foreach (bool bit in readInfo.Bits)
-                    bits += (bit ? "1" : "0");
-
-                if (!readInfo.Ignored)
-                {
-                    item.BitOffset = bitPos;
-                    item.ByteOffset = bytePos;
-
-                    bitPos += readInfo.LengthBits;
-                    bytePos += ((float)readInfo.LengthBits / 8);
-                }
-                else
-                {
-                    item.BitOffset = -1;
-                    item.ByteOffset = -1;
-                }
-
-                item.Name = readInfo.Name;
-                item.Value = readInfo.Data;
-                item.Type = readInfo.Type;
-                item.BitLength = readInfo.LengthBits;
-                item.ByteLength = readInfo.Length;
-                item.Bits = bits;
-
-                lvwPacketData.AddObject(item);
-            }
+            lvwPacketData.AddObjects(packet.ReadList);
 
             var ms = packet.BaseStream as System.IO.MemoryStream;
             hexBox.ByteProvider = new DynamicByteProvider(ms.GetBuffer());

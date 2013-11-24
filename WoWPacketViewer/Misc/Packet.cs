@@ -19,17 +19,21 @@ namespace WoWPacketViewer.Misc
 
     public sealed partial class Packet : BinaryReader
     {
+        private int _rposBits;
+
         public Packet(uint opcodeValue, byte[] buffer, Direction direction)
             : base(new MemoryStream(buffer, 0, buffer.Length, false, true))
         {
             OpcodeValue = opcodeValue;
             Direction = direction;
             Length = buffer.Length;
-            ReadList = new List<PacketReadInfo>();
+            ReadList = new List<PacketReadItem>();
+            _rposBits = 0;
         }
 
         public void Reset()
         {
+            _rposBits = 0;
             BaseStream.Position = 0;
             ReadList.Clear();
             ResetBitReader();
@@ -59,7 +63,7 @@ namespace WoWPacketViewer.Misc
             private set;
         }
 
-        public List<PacketReadInfo> ReadList
+        public List<PacketReadItem> ReadList
         {
             get;
             set;
@@ -70,7 +74,8 @@ namespace WoWPacketViewer.Misc
             if (!lengthInBits)
                 length *= 8;
 
-            ReadList.Add(new PacketReadInfo(string.Format(name, nameArgs), data, type, length, bits));
+            ReadList.Add(new PacketReadItem(string.Format(name, nameArgs), data, type, length, bits, _rposBits, true));
+            _rposBits += length;
         }
 
         public void AddIgnoredRead(string name, string data, Type type, int length, BitArray bits, bool lengthInBits, params object[] nameArgs)
@@ -78,12 +83,12 @@ namespace WoWPacketViewer.Misc
             if (!lengthInBits)
                 length *= 8;
 
-            ReadList.Add(new PacketReadInfo(string.Format(name, nameArgs), data, type, length, bits, true));
+            ReadList.Add(new PacketReadItem(string.Format(name, nameArgs), data, type, length, bits, _rposBits, false));
         }
 
         public void SetLastDataField(string format, params object[] args)
         {
-            ReadList[ReadList.Count - 1].Data = string.Format(format, args);
+            ReadList[ReadList.Count - 1].Value = string.Format(format, args);
         }
 
         private byte _bitpos = 8;

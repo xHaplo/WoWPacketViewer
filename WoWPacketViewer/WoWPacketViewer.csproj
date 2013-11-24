@@ -72,7 +72,6 @@
     <Compile Include="Misc\Bit.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\Guid.cs" />
-    <Compile Include="Misc\PacketReadInfo.cs" />
     <Compile Include="Misc\PacketDump.cs" />
     <Compile Include="Misc\Quaternion.cs" />
     <Compile Include="Misc\Utils.cs" />

@@ -1,10 +1,37 @@
 ﻿using System;
+using System.Collections;
 using WoWPacketViewer.Enums;
 
 namespace WoWPacketViewer
 {
-    class PacketReadItem
+    public class PacketReadItem
     {
+        public PacketReadItem(string name, string value, Type type, int lengthBits, BitArray bits, int bitOffset, bool rawDataInPacket = true)
+        {
+            Name = name;
+            Value = value;
+            Type = type;
+            Bits = bits;
+            BitLength = lengthBits;
+            BitOffset = bitOffset;
+            ByteLength = lengthBits / 8;
+            ByteOffset = (float)bitOffset / 8;
+            RawDataInPacket = rawDataInPacket;
+
+            BitString = "";
+            foreach (bool bit in Bits)
+                BitString += (bit ? "1" : "0");
+        }
+
+        // Raw data is directly from packet.
+        // Set this to false when the data is
+        // simply constructed from pieces of data in a packet.
+        public bool RawDataInPacket
+        {
+            get;
+            set;
+        }
+
         public int BitOffset
         {
             get;
@@ -63,7 +90,13 @@ namespace WoWPacketViewer
             }
         }
 
-        public string Bits
+        public BitArray Bits
+        {
+            get;
+            set;
+        }
+
+        public string BitString
         {
             get;
             set;
