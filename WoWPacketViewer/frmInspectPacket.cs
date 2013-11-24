@@ -47,6 +47,8 @@ namespace WoWPacketViewer
         public void ResetForm()
         {
             Text = _baseTitle;
+            lvwPacketData.PrimarySortColumn = null;
+            lvwPacketData.SecondarySortColumn = null;
             lvwPacketData.ClearObjects();
             _packet = null;
         }
