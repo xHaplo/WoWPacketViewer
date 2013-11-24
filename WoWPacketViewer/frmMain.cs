@@ -100,6 +100,13 @@ namespace WoWPacketViewer
 
         private void LoadPacketDumpFromFile(string logPath)
         {
+            // No file loaded, prompt for one.
+            if (String.IsNullOrEmpty(logPath))
+            {
+                loadPacketDumpToolStripMenuItem_Click(null, null);
+                return;
+            }
+
             var packetList = new List<Packet>();
             if (!PacketDump.Load(logPath, ref packetList))
             {
@@ -232,6 +239,23 @@ namespace WoWPacketViewer
                 LoadInfoForSelectedPacket();
                 e.Handled = true;
             }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                // Refresh packet dump
+                case Keys.F5:
+                    reloadDumpToolStripMenuItem_Click(null, null);
+                    return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void reloadDumpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadPacketDumpFromFile(_logPath);
         }
     }
 }
