@@ -35,6 +35,9 @@ namespace WoWPacketViewer.Parsing.Handlers.V541_17538
             var accountTimes = new DateTime[8];
             for (int i = 0; i < accountTimes.Length; i++)
                 accountTimes[i] = packet.ReadDateTime("{0}: Unix time", i);
+
+            packet.ReadBit("Unk0");
+            packet.ReadBits(packet.BitsRemaining(), "Bits remaining in flushed byte.");
         }
 
         [Parser(Opcode.CMSG_REALM_SPLIT, 0x0449, Direction.ClientToServer)]
