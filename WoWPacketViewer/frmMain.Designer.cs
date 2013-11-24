@@ -31,6 +31,7 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadPacketDumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadDumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,7 +41,6 @@
             this.olvColumnDirection = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnOpcode = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumnLength = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.reloadDumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lvwPacketList)).BeginInit();
             this.SuspendLayout();
@@ -73,6 +73,13 @@
             this.loadPacketDumpToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.loadPacketDumpToolStripMenuItem.Text = "&Load packet dump";
             this.loadPacketDumpToolStripMenuItem.Click += new System.EventHandler(this.loadPacketDumpToolStripMenuItem_Click);
+            // 
+            // reloadDumpToolStripMenuItem
+            // 
+            this.reloadDumpToolStripMenuItem.Name = "reloadDumpToolStripMenuItem";
+            this.reloadDumpToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.reloadDumpToolStripMenuItem.Text = "&Reload packet dump";
+            this.reloadDumpToolStripMenuItem.Click += new System.EventHandler(this.reloadDumpToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -123,6 +130,7 @@
             this.lvwPacketList.Size = new System.Drawing.Size(487, 364);
             this.lvwPacketList.TabIndex = 1;
             this.lvwPacketList.UseCompatibleStateImageBehavior = false;
+            this.lvwPacketList.UseFiltering = true;
             this.lvwPacketList.View = System.Windows.Forms.View.Details;
             this.lvwPacketList.VirtualMode = true;
             this.lvwPacketList.DoubleClick += new System.EventHandler(this.lvwPacketList_DoubleClick);
@@ -151,13 +159,6 @@
             this.olvColumnLength.AspectName = "Length";
             this.olvColumnLength.CellPadding = null;
             this.olvColumnLength.Text = "Length";
-            // 
-            // reloadDumpToolStripMenuItem
-            // 
-            this.reloadDumpToolStripMenuItem.Name = "reloadDumpToolStripMenuItem";
-            this.reloadDumpToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.reloadDumpToolStripMenuItem.Text = "&Reload packet dump";
-            this.reloadDumpToolStripMenuItem.Click += new System.EventHandler(this.reloadDumpToolStripMenuItem_Click);
             // 
             // frmMain
             // 
