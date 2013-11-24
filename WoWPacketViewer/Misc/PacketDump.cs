@@ -17,7 +17,8 @@ namespace WoWPacketViewer.Misc
 
             try
             {
-                using (var sr = new StreamReader(filename))
+                using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var sr = new StreamReader(fs))
                 {
                     bool isReadingPacket = false;
                     int lineBreakCounter = 0;
